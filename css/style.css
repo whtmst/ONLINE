@@ -71,10 +71,21 @@ input[type="text"] {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid var(--border-color);
-    background: #313338;
+    background: var(--bg-section);
     color: var(--text-color);
     font-size: 1em;
     flex: 1 1 200px;
+}
+
+select:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+input[type="text"]::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
 }
 
 /* Таблица */
@@ -82,7 +93,7 @@ input[type="text"] {
     overflow-x: auto;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    max-height: 100%; /* max-height: 75vh; */
+    max-height: 100%;
 }
 
 table {
@@ -97,7 +108,7 @@ td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
-    white-space: nowrap;    /* Важно для названий рецептов */
+    white-space: nowrap;
 }
 
 th {
@@ -110,7 +121,7 @@ th {
     font-weight: 700;
 }
 
-/* Прилипание первого столбца (Рецепт) */
+/* Sticky first column */
 td:first-child,
 th:first-child {
     position: sticky;
@@ -126,7 +137,7 @@ th:first-child {
     background-color: var(--table-header-bg);
 }
 
-/* Разделители категорий (---Flasks---) */
+/* Category separators */
 tr.category-row td {
     background-color: var(--accent-color);
     color: var(--white-text-color);
@@ -136,8 +147,9 @@ tr.category-row td {
     font-size: 1.1em;
 }
 
-/* Чекбоксы и иконки */
+/* Status icons */
 .status-icon {
+    font-family: var(--font-emoji);
     font-size: 1.2em;
 }
 
@@ -156,59 +168,41 @@ tr.category-row td {
     color: var(--accent-color);
 }
 
-input {
-    background: var(--bg-section);
+/* Hero section */
+.hero {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.hero p {
+    font-size: 1.2em;
     color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 10px;
-    font-family: var(--font-secondary);
-    font-size: 14px;
+    margin: 0 0 8px 0;
+    opacity: 0.9;
+    line-height: 1.4;
 }
 
-input::placeholder {
-    color: var(--text-color);
+.hero p:first-of-type {
+    margin-top: 0;
 }
 
-input:focus {
-    outline: none;
-    border-color: var(--accent-color);
+.hero p:last-of-type {
+    margin-bottom: 10px;
 }
 
-/* Textarea styles */
-textarea {
-    width: 100%;
-    height: 120px;
-    min-height: 120px;
-    max-height: 600px;
-    background: var(--bg-section);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 10px 12px;
-    font-family: var(--font-secondary);
-    font-size: 14px;
-    resize: vertical;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-
-textarea::placeholder {
-    color: var(--text-color);
-}
-
-/* Buttons */
-button {
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
     background: var(--accent-color);
     color: var(--white-text-color);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
     font-weight: bold;
+    margin-top: 20px;
     transition: background 0.2s;
 }
 
-button:hover {
+.btn:hover {
     background: var(--accent-hover-color);
+    opacity: 0.9;
 }
