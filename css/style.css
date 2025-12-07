@@ -1,27 +1,46 @@
 :root {
-    --bg-color: #1a1a1a;
-    --text-color: #e0e0e0;
-    --accent-color: #4a90e2;
-    --table-header-bg: #333;
-    --border-color: #444;
-    --success-color: #4caf50;
-    --sub-header-bg: #2c3e50;
+    --bg-main: #2b2d31;
+    --bg-section: #1e1f22;
+    --text-color: #dcddde;
+    --accent-color: #ff8000; /* Золотистый акцент */
+    --border-color: #3f4147;
+    --table-header-bg: #313338;
+    --sub-header-bg: #4a90e2; /* Синий для категорий */
+    --success-color: #44ff88; /* Зеленый для галочек */
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
+    background-color: var(--bg-main);
     color: var(--text-color);
     margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
     padding: 20px;
 }
 
-/* Навигация */
+/* 1. COVER и Меню */
+.cover-area {
+    height: 250px; /* Высота обложки */
+    background: url('https://i.imgur.com/example_cover.jpg') center center / cover no-repeat; /* ЗАМЕНИ URL НА СВОЙ */
+    border-radius: 8px 8px 0 0;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
 nav {
-    margin-bottom: 20px;
-    padding: 10px;
-    background: var(--table-header-bg);
-    border-radius: 8px;
+    width: 100%;
+    padding: 10px 20px;
+    background: rgba(30, 31, 34, 0.9); /* Полупрозрачный фон меню */
+    border-top: 2px solid var(--accent-color);
+    border-radius: 0 0 8px 8px;
 }
 
 nav a {
@@ -30,27 +49,42 @@ nav a {
     margin-right: 20px;
     font-weight: bold;
     font-size: 1.1em;
+    padding: 5px 0;
+    transition: color 0.2s;
 }
 
 nav a:hover {
     color: var(--accent-color);
 }
 
-/* Фильтры */
+h1 {
+    color: var(--accent-color);
+    text-align: center;
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Фильтры и поиск */
 .controls {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
+    padding: 20px;
+    background: var(--bg-section);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     flex-wrap: wrap;
 }
 
-select, input {
+select, input[type="text"] {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid var(--border-color);
-    background: #2a2a2a;
-    color: white;
+    background: #313338;
+    color: var(--text-color);
     font-size: 1em;
+    flex: 1 1 200px; /* Адаптивность */
 }
 
 /* Таблица */
@@ -58,40 +92,44 @@ select, input {
     overflow-x: auto;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    max-height: 80vh; /* Ограничение высоты для скролла */
+    max-height: 80vh;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px; /* Чтобы не сжималась в кашу */
+    min-width: 800px;
+    background: var(--bg-section);
 }
 
 th, td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
+    white-space: nowrap; /* Важно для названий рецептов */
 }
 
-/* Sticky Header - Чтобы шапка и первый столбец всегда были видны */
 th {
     background-color: var(--table-header-bg);
     position: sticky;
     top: 0;
     z-index: 10;
+    color: var(--accent-color);
+    font-size: 1.05em;
+    font-weight: 700;
 }
 
-/* Первый столбец (Рецепт) прилипает слева */
+/* Прилипание первого столбца (Рецепт) */
 td:first-child, th:first-child {
     position: sticky;
     left: 0;
-    background-color: var(--bg-color); /* Перекрывает скролл */
+    background-color: var(--bg-section); 
     z-index: 5;
     font-weight: bold;
     border-right: 2px solid var(--border-color);
 }
 th:first-child {
-    z-index: 15; /* Левый верхний угол поверх всего */
+    z-index: 15; 
     background-color: var(--table-header-bg);
 }
 
@@ -102,16 +140,16 @@ tr.category-row td {
     font-weight: bold;
     text-align: center;
     padding: 8px;
+    font-size: 1.1em;
 }
 
 /* Чекбоксы и Иконки */
 .status-icon {
     font-size: 1.2em;
 }
-.has-recipe { color: var(--success-color); }
-.no-recipe { color: #555; }
+.has-recipe { color: var(--success-color); } /* Зеленый */
+.no-recipe { color: #ff4444; } /* Красный */
 
-/* Анимация загрузки */
 #loader {
     text-align: center;
     font-size: 1.5em;
