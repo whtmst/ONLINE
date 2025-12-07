@@ -1,0 +1,120 @@
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --accent-color: #4a90e2;
+    --table-header-bg: #333;
+    --border-color: #444;
+    --success-color: #4caf50;
+    --sub-header-bg: #2c3e50;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+}
+
+/* Навигация */
+nav {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: var(--table-header-bg);
+    border-radius: 8px;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+nav a:hover {
+    color: var(--accent-color);
+}
+
+/* Фильтры */
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+select, input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background: #2a2a2a;
+    color: white;
+    font-size: 1em;
+}
+
+/* Таблица */
+.table-container {
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    max-height: 80vh; /* Ограничение высоты для скролла */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* Чтобы не сжималась в кашу */
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Sticky Header - Чтобы шапка и первый столбец всегда были видны */
+th {
+    background-color: var(--table-header-bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Первый столбец (Рецепт) прилипает слева */
+td:first-child, th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: var(--bg-color); /* Перекрывает скролл */
+    z-index: 5;
+    font-weight: bold;
+    border-right: 2px solid var(--border-color);
+}
+th:first-child {
+    z-index: 15; /* Левый верхний угол поверх всего */
+    background-color: var(--table-header-bg);
+}
+
+/* Разделители категорий (---Flasks---) */
+tr.category-row td {
+    background-color: var(--sub-header-bg);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px;
+}
+
+/* Чекбоксы и Иконки */
+.status-icon {
+    font-size: 1.2em;
+}
+.has-recipe { color: var(--success-color); }
+.no-recipe { color: #555; }
+
+/* Анимация загрузки */
+#loader {
+    text-align: center;
+    font-size: 1.5em;
+    padding: 50px;
+    color: var(--accent-color);
+}
