@@ -1,5 +1,5 @@
-// ВСТАВЬ СЮДА СВОЙ URL ВЕБ-ПРИЛОЖЕНИЯ
-const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTnOVmLIN_8Hu6PqA0/exec"; // Твой URL
+// URL ВЕБ-ПРИЛОЖЕНИЯ
+const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTnOVmLIN_8Hu6PqA0/exec";
 
 // Получаем параметры URL (для режима редактирования)
 const urlParams = new URLSearchParams(window.location.search);
@@ -8,12 +8,6 @@ const currentToken = urlParams.get('token');
 const isEditMode = currentUser && currentToken;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Вставляем заглушку для обложки (потом ты заменишь URL в CSS)
-    const coverArea = document.querySelector('.cover-area');
-    if (coverArea) {
-        // Установка стандартного фона, пока ты не заменишь
-        coverArea.style.background = 'url("https://images.unsplash.com/photo-1542838132-7561848a605f?fit=crop&w=1400&h=250") center center / cover no-repeat';
-    }
 
     loadData();
 
@@ -33,16 +27,16 @@ async function loadData() {
         globalData.headers = data[0];
         globalData.rows = data.slice(1);
         
-        // --- ИСПРАВЛЕНИЕ 1: Обработка числовых заголовков ---
+        // --- Обработка числовых заголовков и учет новой колонки URL ---
         globalData.userColumns = [];
         globalData.headers.forEach((colName, index) => {
             // Приводим к строке, чтобы избежать ошибки .trim() на числах
             const name = String(colName || '').trim();
             
             // Колонка считается "игроком" если: 
-            // 1. Индекс >= 2 (после Профессии и Рецепта)
+            // 1. Индекс >= 3 (после Профессии (0), Рецепта (1) и Ссылки (2))
             // 2. Заголовок (name) не пустой
-            if (index >= 2 && name !== '') {
+            if (index >= 3 && name !== '') {
                 globalData.userColumns.push({
                     name: name,
                     index: index // Индекс в массиве row[]
@@ -79,7 +73,7 @@ function renderTable() {
     const filterProf = document.getElementById('professionFilter').value;
     const filterText = document.getElementById('searchInput').value.toLowerCase();
 
-    // 1. Отрисовка Шапки
+    // 1. Отрисовка шапки
     thead.innerHTML = '';
     const headerRow = document.createElement('tr');
     headerRow.innerHTML = `<th>Название рецепта</th>`;
@@ -97,19 +91,20 @@ function renderTable() {
     });
     thead.appendChild(headerRow);
 
-    // 2. Отрисовка Тела
+    // 2. Отрисовка тела
     tbody.innerHTML = '';
     
     globalData.rows.forEach(row => {
         const profession = row[0];
         const recipeName = row[1];
+        const recipeLink = row[2]; // <--- Получаем ссылку по индексу 2
         
         const isCategory = recipeName && recipeName.startsWith('---') && recipeName.endsWith('---');
 
         // Фильтрация
         if (filterProf !== 'All' && profession !== filterProf) return;
         
-        // --- ИСПРАВЛЕНИЕ 2: Скрытие категорий при поиске ---
+        // --- Скрытие категорий при поиске ---
         if (filterText) {
             // Если есть поиск, и это категория - пропускаем
             if (isCategory) return;
@@ -125,8 +120,7 @@ function renderTable() {
         if (isCategory) {
             tr.className = 'category-row';
             
-            // --- НОВАЯ ЛОГИКА ОЧИСТКИ для формата ---[Prof] Type---
-            // Удаляем только --- в начале и конце строки
+            // Удаляем только --- в начале и конце строки для формата ---[Prof] Type---
             let cleanName = recipeName.replace(/^---|---$/g, '').trim(); 
             
             // colspan: 1 (Рецепт) + количество отображаемых колонок игроков
@@ -140,9 +134,25 @@ function renderTable() {
         if (!recipeName && !profession) return;
 
 
-        // Обычная строка
-        let rowHtml = `<td>${recipeName}</td>`;
+        // Обычная строка (КОНТЕЙНЕР РЕЦЕПТА)
+        let recipeCellHtml = '';
         
+        // Логика для ссылки-смайлика
+        if (recipeLink && String(recipeLink).startsWith('http')) {
+            // Если есть ссылка, создаем flex-контейнер и иконку
+            const linkIconHtml = `<a href="${recipeLink}" target="_blank" class="link-icon" title="Открыть ссылку">🌐</a>`;
+            recipeCellHtml = `<td class="recipe-cell">
+                                <span>${recipeName}</span>
+                                ${linkIconHtml}
+                            </td>`;
+        } else {
+            // Если ссылки нет, просто выводим название
+            recipeCellHtml = `<td>${recipeName}</td>`;
+        }
+
+        // Собираем строку
+        let rowHtml = recipeCellHtml; // Первая ячейка
+
         // Фильтруем колонки игроков, которые нужно отобразить
         const columnsToRender = isEditMode 
             ? globalData.userColumns.filter(col => col.name === currentUser) 
@@ -160,7 +170,7 @@ function renderTable() {
                             onchange="updateRecipe('${profession}', '${recipeName}', this.checked)">
                     </td>`;
             } else {
-                // РИСУЕМ ИКОНКУ (будет кликабельной на следующем шаге)
+                // РИСУЕМ ИКОНКУ
                 const icon = hasRecipe ? '<span class="status-icon has-recipe">✅</span>' : '<span class="status-icon no-recipe">❌</span>';
                 rowHtml += `<td style="text-align: center;">${icon}</td>`;
             }
@@ -171,7 +181,7 @@ function renderTable() {
     });
 }
 
-// Отправка данных на сервер (остается без изменений)
+// Отправка данных на сервер
 function updateRecipe(profession, recipeName, isChecked) {
     if (!isEditMode) return;
 
