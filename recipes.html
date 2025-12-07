@@ -12,32 +12,34 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="cover-area">
-        <nav>
-            <a href="index.html">Главная</a>
-            <a href="recipes.html">База рецептов</a>
-        </nav>
-    </div>
-    <div class="container">
-        <div class="hero">
-            <h1>База рецептов</h1>
-            <p>Здесь вы можете найти крафтеров и доступные у них рецепты.</p>
-            <p>Выберете профессию или введите название рецепта (на английском языке) в поисковую строку.</p>
-            <div class="controls">
-                <select id="professionFilter" class="placeholder-style">
-                    <option value="All">-- Все профессии --</option>
-                </select>
-                <div class="search-wrapper">
-                    <input type="text" id="searchInput" placeholder="Поиск рецепта...">
-                    <button id="clearSearch" title="Очистить поиск" style="display: none;">❌</button>
+    <div class="main-wrapper">
+        <div class="cover-area">
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="recipes.html">База рецептов</a>
+            </nav>
+        </div>
+        <div class="container">
+            <div class="hero">
+                <h1>База рецептов</h1>
+                <p>Здесь вы можете найти крафтеров и доступные у них рецепты.</p>
+                <p>Выберете профессию или введите название рецепта (на английском языке) в поисковую строку.</p>
+                <div class="controls">
+                    <select id="professionFilter" class="placeholder-style">
+                        <option value="All">-- Все профессии --</option>
+                    </select>
+                    <div class="search-wrapper">
+                        <input type="text" id="searchInput" placeholder="Поиск рецепта...">
+                        <button id="clearSearch" title="Очистить поиск" style="display: none;">❌</button>
+                    </div>
                 </div>
-            </div>
-            <div id="loader">Загружаю базу данных...</div>
-            <div class="table-container">
-                <table id="recipeTable">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
+                <div id="loader">Загружаю базу данных...</div>
+                <div class="table-container">
+                    <table id="recipeTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
