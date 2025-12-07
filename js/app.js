@@ -82,7 +82,7 @@ function renderTable() {
     // 1. Отрисовка Шапки
     thead.innerHTML = '';
     const headerRow = document.createElement('tr');
-    headerRow.innerHTML = `<th>Рецепт</th>`;
+    headerRow.innerHTML = `<th>Название рецепта</th>`;
     
     globalData.userColumns.forEach(userCol => {
         // В режиме редактирования показываем только колонку текущего юзера
