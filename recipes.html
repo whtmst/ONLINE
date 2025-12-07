@@ -3,35 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>База Рецептов Гильдии</title>
+    <title>База Рецептов Гильдии O N L I N E</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <nav>
-        <a href="index.html">Главная</a>
-        <a href="recipes.html">База Рецептов</a>
-    </nav>
-
-    <h1>Крафт Гильдии</h1>
-
-    <div class="controls">
-        <select id="professionFilter">
-            <option value="All">Все профессии</option>
-            </select>
-        
-        <input type="text" id="searchInput" placeholder="Поиск рецепта...">
+    <div class="cover-area">
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="recipes.html">База Рецептов</a>
+        </nav>
     </div>
+    
+    <div class="container">
+        <h1>База Крафта Гильдии</h1>
 
-    <div id="loader">Загрузка базы данных...</div>
+        <div class="controls">
+            <select id="professionFilter">
+                <option value="All">-- Все профессии --</option>
+            </select>
+            
+            <input type="text" id="searchInput" placeholder="Поиск рецепта...">
+        </div>
 
-    <div class="table-container">
-        <table id="recipeTable">
-            <thead>
-                </thead>
-            <tbody>
-                </tbody>
-        </table>
+        <div id="loader">Загрузка базы данных...</div>
+
+        <div class="table-container">
+            <table id="recipeTable">
+                <thead>
+                    </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="js/app.js"></script>
