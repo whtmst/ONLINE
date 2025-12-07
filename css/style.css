@@ -1,8 +1,15 @@
 /* =========================================
    Global Styles
    ========================================= */
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+   
 body {
-    font-family: var(--font-secondary);
+    font-family: var(--font-primary);
     background-color: var(--bg-main);
     color: var(--text-color);
     margin: 0;
@@ -10,7 +17,8 @@ body {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 90%; /* Устанавливаем разумный лимит ширины */
+    width: 100%; /* Добавляем width: 100% для корректной работы на узких экранах */
     margin: 0 auto;
     padding: 20px;
 }
@@ -119,8 +127,8 @@ h1 {
 
 select,
 input[type="text"] {
-    font-family: var(--font-secondary);
-    padding: 10px;
+    font-family: var(--font-primary);
+    padding: 6.5px;
     border-radius: 5px;
     border: 1px solid var(--border-color);
     background: var(--bg-section);
@@ -138,6 +146,38 @@ input[type="text"]:focus {
 input[type="text"]::placeholder {
     color: var(--text-color);
     opacity: 0.6;
+}
+
+.search-wrapper {
+    position: relative;
+    flex: 1 1 200px; /* Чтобы занимал столько же места, сколько и input */
+}
+
+input[type="text"] {
+    width: 100%; /* Нужно убедиться, что поле ввода занимает 100% ширины своего родителя */
+    padding-right: 35px !important; /* Добавляем место для крестика */
+}
+
+#clearSearch {
+    position: absolute;
+    top: 50%;
+    right: 5px; /* Смещаем вправо */
+    transform: translateY(-50%);
+    
+    /* Стилизация кнопки */
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.1em;
+    cursor: pointer;
+    opacity: 0.5;
+    padding: 0 5px;
+    line-height: 1;
+    transition: opacity 0.2s;
+}
+
+#clearSearch:hover {
+    opacity: 1;
 }
 
 /* =========================================

@@ -12,8 +12,29 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
 
     // Слушатели фильтров
-    document.getElementById('professionFilter').addEventListener('change', renderTable);
-    document.getElementById('searchInput').addEventListener('input', renderTable);
+    const professionFilter = document.getElementById('professionFilter');
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchButton = document.getElementById('clearSearch');
+
+    professionFilter.addEventListener('change', renderTable);
+    
+    // Отслеживаем ввод и показываем/скрываем крестик
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.length > 0) {
+            clearSearchButton.style.display = 'block';
+        } else {
+            clearSearchButton.style.display = 'none';
+        }
+        renderTable(); // Обновляем таблицу при вводе
+    });
+
+    // Обработка клика по крестику
+    clearSearchButton.addEventListener('click', () => {
+        searchInput.value = ''; // Очищаем поле
+        clearSearchButton.style.display = 'none'; // Скрываем крестик
+        renderTable(); // Обновляем таблицу, сбрасывая фильтр поиска
+        searchInput.focus(); // Для удобства можно вернуть фокус
+    });
 });
 
 let globalData = {headers: [], rows: [], userColumns: []}; // Обновляем структуру данных

@@ -6,7 +6,8 @@
     <title>Гильдии ONLINE - База рецептов</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -26,7 +27,10 @@
                 <select id="professionFilter">
                     <option value="All">-- Все профессии --</option>
                 </select>
-                <input type="text" id="searchInput" placeholder="Поиск рецепта...">
+                <div class="search-wrapper">
+                    <input type="text" id="searchInput" placeholder="Поиск рецепта...">
+                    <button id="clearSearch" title="Очистить поиск" style="display: none;">❌</button>
+                </div>
             </div>
             <div id="loader">Загружаю базу данных...</div>
             <div class="table-container">

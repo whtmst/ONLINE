@@ -1,17 +1,29 @@
-/* Fonts */
 :root {
-    --font-secondary: 'IBM Plex Mono', monospace;
+    /* --- ШРИФТЫ --- */
+    /* Основной шрифт для всего текста и интерфейса */
+    --font-primary: 'Finlandica', 'Times New Roman', 'Georgia', 'Palatino', serif;
+    /* Специальный шрифт для цветных эмодзи (используется для иконок статуса) */
     --font-emoji: 'Noto Color Emoji', 'Apple Color Emoji', 'Android Emoji', 'Segoe UI Emoji', sans-serif;
 
-    /* Colors */
-    --bg-main: #2b2d31;
-    --bg-section: #1e1f22;
-    --text-color: #dcddde;
-    --white-text-color: #ffffff;
-    --accent-color: #ff8000;
-    --accent-hover-color: #ff9999;
-    --border-color: #3f4147;
-    --table-header-bg: #313338;
-    --success-color: #44ff88;
-    --unsuccess-color: #ff4444;
+    /* ================================================= */
+    /* ЦВЕТОВАЯ ПАЛИТРА                   */
+    /* ================================================= */
+    
+    /* --- ГЛАВНЫЕ ЦВЕТА ФОНА И ТЕКСТА --- */
+    --bg-main: #141414;          /* Цвет фона для всего BODY (самый темный) */
+    --bg-section: #1e1f20;       /* Цвет фона для контейнеров/секций (Controls, Table, Nav) */
+    
+    --text-color: #dcdcdc;       /* Основной цвет текста (светло-серый) */
+    --white-text-color: #ffffff; /* Чисто белый текст (используется редко, например, в категориях) */
+
+    /* --- АКЦЕНТНЫЕ ЦВЕТА (СМЕННЫЙ) --- */
+    --accent-color: #ff8000;      /* Основной акцентный цвет (заголовки, категории, кнопки) */
+    --accent-hover-color: #ff9999;/* Цвет при наведении (hover) на акцентные элементы */
+
+    /* --- ГРАНИЦЫ И ТАБЛИЦЫ --- */
+    --border-color: #404040;      /* Цвет тонких границ между секциями и ячейками */
+
+    /* --- ЦВЕТА СТАТУСА (Успех/Неудача) --- */
+    --success-color: #44ff88;     /* Цвет для иконок успешного статуса (зеленый - "✅") */
+    --unsuccess-color: #ff4444;   /* Цвет для иконок неуспешного статуса (красный - "❌") */
 }
