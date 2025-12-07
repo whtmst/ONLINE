@@ -1,5 +1,5 @@
-// URL ВЕБ-ПРИЛОЖЕНИЯ
-const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTnOVmLIN_8Hu6PqA0/exec";
+// ВСТАВЬ СЮДА СВОЙ URL ВЕБ-ПРИЛОЖЕНИЯ
+const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTN.../exec"; // Твой URL
 
 // Получаем параметры URL (для режима редактирования)
 const urlParams = new URLSearchParams(window.location.search);
@@ -8,6 +8,13 @@ const currentToken = urlParams.get('token');
 const isEditMode = currentUser && currentToken;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Вставляем заглушку для обложки (потом ты заменишь URL в CSS)
+    const coverArea = document.querySelector('.cover-area');
+    if (coverArea) {
+        // Установка стандартного фона, пока ты не заменишь
+        coverArea.style.background = 'url("https://images.unsplash.com/photo-1542838132-7561848a605f?fit=crop&w=1400&h=250") center center / cover no-repeat';
+    }
+
     loadData();
 
     // Слушатели фильтров
@@ -15,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchInput').addEventListener('input', renderTable);
 });
 
-let globalData = []; // Храним данные здесь
+let globalData = {headers: [], rows: [], userColumns: []}; // Обновляем структуру данных
 
 async function loadData() {
     const loader = document.getElementById('loader');
@@ -23,12 +30,23 @@ async function loadData() {
         const response = await fetch(API_URL);
         const data = await response.json();
         
-        // data[0] - это заголовки [PROFESSION, RECIPE, Misha, Titanbeard...]
-        // data[1...] - это строки
-        globalData = {
-            headers: data[0],
-            rows: data.slice(1)
-        };
+        globalData.headers = data[0];
+        globalData.rows = data.slice(1);
+        
+        // --- НОВОЕ: Определяем, какие колонки игроков имеют заголовки ---
+        globalData.userColumns = [];
+        globalData.headers.forEach((colName, index) => {
+            // Колонка считается "игроком" если: 
+            // 1. Индекс >= 2 (после Профессии и Рецепта)
+            // 2. Заголовок (colName) не пустой (trim() != '')
+            if (index >= 2 && colName && colName.trim() !== '') {
+                globalData.userColumns.push({
+                    name: colName.trim(),
+                    index: index // Индекс в массиве row[]
+                });
+            }
+        });
+        // -----------------------------------------------------------------
 
         populateProfessionFilter();
         renderTable();
@@ -42,8 +60,7 @@ async function loadData() {
 
 function populateProfessionFilter() {
     const select = document.getElementById('professionFilter');
-    // Собираем уникальные профессии
-    const professions = [...new Set(globalData.rows.map(row => row[0]))].filter(p => p);
+    const professions = [...new Set(globalData.rows.map(row => row[0]))].filter(p => p && !p.startsWith('---'));
     
     professions.forEach(prof => {
         const option = document.createElement('option');
@@ -62,26 +79,17 @@ function renderTable() {
     // 1. Отрисовка Шапки
     thead.innerHTML = '';
     const headerRow = document.createElement('tr');
-    
-    // Колонка Рецепт
     headerRow.innerHTML = `<th>Рецепт</th>`;
     
-    // Колонки Игроков
-    // Если EditMode -> Показываем только текущего юзера. Если нет -> Всех.
-    const userColumnsIndices = []; // Индексы колонок, которые будем рисовать
-    
-    globalData.headers.forEach((colName, index) => {
-        // Пропускаем первые 2 колонки (Профа, Рецепт)
-        if (index < 2) return; 
-
+    globalData.userColumns.forEach(userCol => {
+        // В режиме редактирования показываем только колонку текущего юзера
         if (isEditMode) {
-            if (colName === currentUser) {
-                headerRow.innerHTML += `<th>${colName} (Вы)</th>`;
-                userColumnsIndices.push(index);
+            if (userCol.name === currentUser) {
+                headerRow.innerHTML += `<th>${userCol.name} (Вы)</th>`;
             }
         } else {
-            headerRow.innerHTML += `<th>${colName}</th>`;
-            userColumnsIndices.push(index);
+            // В режиме просмотра показываем всех найденных юзеров
+            headerRow.innerHTML += `<th>${userCol.name}</th>`;
         }
     });
     thead.appendChild(headerRow);
@@ -95,30 +103,38 @@ function renderTable() {
 
         // Фильтрация
         if (filterProf !== 'All' && profession !== filterProf) return;
-        if (filterText && !recipeName.toLowerCase().includes(filterText)) return;
+        if (filterText && !recipeName.toLowerCase().includes(filterText) && !recipeName.startsWith('---')) return;
 
         const tr = document.createElement('tr');
 
         // Проверка на заголовок категории (---Flasks---)
-        if (recipeName.startsWith('---') && recipeName.endsWith('---')) {
+        if (recipeName && recipeName.startsWith('---') && recipeName.endsWith('---')) {
             tr.className = 'category-row';
-            // Убираем тире для красоты
             const cleanName = recipeName.replace(/---/g, '').trim();
-            // colspan растягиваем на (1 + количество игроков)
-            tr.innerHTML = `<td colspan="${1 + userColumnsIndices.length}">${cleanName}</td>`;
+            // colspan: 1 (Рецепт) + количество отображаемых колонок игроков
+            const colspanCount = 1 + (isEditMode ? 1 : globalData.userColumns.length); 
+            tr.innerHTML = `<td colspan="${colspanCount}">${cleanName}</td>`;
             tbody.appendChild(tr);
             return;
         }
+        
+        // Пропускаем пустые строки, которые не являются категориями
+        if (!recipeName && !profession) return;
+
 
         // Обычная строка
         let rowHtml = `<td>${recipeName}</td>`;
+        
+        // Фильтруем колонки игроков, которые нужно отобразить
+        const columnsToRender = isEditMode 
+            ? globalData.userColumns.filter(col => col.name === currentUser) 
+            : globalData.userColumns;
 
-        userColumnsIndices.forEach(colIndex => {
-            const hasRecipe = row[colIndex] === true;
+        columnsToRender.forEach(userCol => {
+            const hasRecipe = row[userCol.index] === true; // Используем сохраненный индекс
             
             if (isEditMode) {
                 // РИСУЕМ ЧЕКБОКС
-                // colIndex - это реальный индекс в массиве данных
                 const checked = hasRecipe ? 'checked' : '';
                 rowHtml += `
                     <td style="text-align: center;">
@@ -137,16 +153,15 @@ function renderTable() {
     });
 }
 
-// Отправка данных на сервер
+// Отправка данных на сервер (остается без изменений)
 function updateRecipe(profession, recipeName, isChecked) {
     if (!isEditMode) return;
 
-    // Оптимистичный UI: мы не ждем ответа, чтобы не тупило
     console.log(`Sending: ${recipeName} -> ${isChecked}`);
 
     fetch(API_URL, {
         method: 'POST',
-        mode: 'no-cors', // Важно для GAS
+        mode: 'no-cors', 
         headers: {
             'Content-Type': 'application/json',
         },
