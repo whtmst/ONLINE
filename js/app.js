@@ -1,4 +1,4 @@
-// ВСТАВЬ СЮДА СВОЙ URL ВЕБ-ПРИЛОЖЕНИЯ
+// URL ВЕБ-ПРИЛОЖЕНИЯ
 const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTnOVmLIN_8Hu6PqA0/exec"; // Твой URL
 
 // Получаем параметры URL (для режима редактирования)
@@ -33,20 +33,23 @@ async function loadData() {
         globalData.headers = data[0];
         globalData.rows = data.slice(1);
         
-        // --- НОВОЕ: Определяем, какие колонки игроков имеют заголовки ---
+        // --- ИСПРАВЛЕНИЕ 1: Обработка числовых заголовков ---
         globalData.userColumns = [];
         globalData.headers.forEach((colName, index) => {
+            // Приводим к строке, чтобы избежать ошибки .trim() на числах
+            const name = String(colName || '').trim();
+            
             // Колонка считается "игроком" если: 
             // 1. Индекс >= 2 (после Профессии и Рецепта)
-            // 2. Заголовок (colName) не пустой (trim() != '')
-            if (index >= 2 && colName && colName.trim() !== '') {
+            // 2. Заголовок (name) не пустой
+            if (index >= 2 && name !== '') {
                 globalData.userColumns.push({
-                    name: colName.trim(),
+                    name: name,
                     index: index // Индекс в массиве row[]
                 });
             }
         });
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------
 
         populateProfessionFilter();
         renderTable();
@@ -100,15 +103,26 @@ function renderTable() {
     globalData.rows.forEach(row => {
         const profession = row[0];
         const recipeName = row[1];
+        
+        const isCategory = recipeName && recipeName.startsWith('---') && recipeName.endsWith('---');
 
         // Фильтрация
         if (filterProf !== 'All' && profession !== filterProf) return;
-        if (filterText && !recipeName.toLowerCase().includes(filterText) && !recipeName.startsWith('---')) return;
+        
+        // --- ИСПРАВЛЕНИЕ 2: Скрытие категорий при поиске ---
+        if (filterText) {
+            // Если есть поиск, и это категория - пропускаем
+            if (isCategory) return;
+            
+            // Если есть поиск, но рецепт не найден - пропускаем
+            if (!recipeName.toLowerCase().includes(filterText)) return;
+        }
+        // ----------------------------------------------------
 
         const tr = document.createElement('tr');
 
         // Проверка на заголовок категории (---Flasks---)
-        if (recipeName && recipeName.startsWith('---') && recipeName.endsWith('---')) {
+        if (isCategory) {
             tr.className = 'category-row';
             const cleanName = recipeName.replace(/---/g, '').trim();
             // colspan: 1 (Рецепт) + количество отображаемых колонок игроков
@@ -142,7 +156,7 @@ function renderTable() {
                             onchange="updateRecipe('${profession}', '${recipeName}', this.checked)">
                     </td>`;
             } else {
-                // РИСУЕМ ИКОНКУ
+                // РИСУЕМ ИКОНКУ (будет кликабельной на следующем шаге)
                 const icon = hasRecipe ? '<span class="status-icon has-recipe">✅</span>' : '<span class="status-icon no-recipe">❌</span>';
                 rowHtml += `<td style="text-align: center;">${icon}</td>`;
             }
