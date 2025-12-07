@@ -1,0 +1,18 @@
+/* Fonts */
+:root {
+    --font-secondary: 'IBM Plex Mono', monospace;
+    --font-emoji: 'Noto Color Emoji', 'Apple Color Emoji', 'Android Emoji', 'Segoe UI Emoji', sans-serif;
+
+    /* Colors */
+    --bg-main: #2b2d31;
+    --bg-section: #1e1f22;
+    --text-color: #dcddde;
+    --white-text-color: #ffffff;
+    --accent-color: #ff8000;
+    --accent-hover-color: #ff9999;
+    --border-color: #3f4147;
+    --table-header-bg: #313338;
+    --sub-header-bg: #4a90e2;
+    --success-color: #44ff88;
+    --unsuccess-color: #ff4444;
+}

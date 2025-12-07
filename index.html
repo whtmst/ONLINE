@@ -3,39 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Гильдия [Название]</title>
+    <title>Гильдии ONLINE - Главная</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/style.css">
-    <style>
+<style>
         .hero {
             text-align: center;
             padding: 50px 0;
         }
+        .hero p {
+            font-size: 1.2em;
+            color: var(--text-color);
+            margin: 20px 0;
+            opacity: 0.9;
+        }
         .btn {
             display: inline-block;
             padding: 15px 30px;
-            background: #4a90e2;
-            color: white;
+            background: var(--accent-color);
+            color: var(--white-text-color);
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
             margin-top: 20px;
+            transition: background 0.2s;
         }
-        .btn:hover { background: #357abd; }
-    </style>
+        .btn:hover { 
+            background: var(--accent-hover-color);
+            opacity: 0.9;
+        }
+        </style>
 </head>
 <body>
-
-    <nav>
-        <a href="index.html">Главная</a>
-        <a href="recipes.html">База Рецептов</a>
-    </nav>
-
-    <div class="hero">
-        <h1>Добро пожаловать в базу знаний нашей Гильдии</h1>
-        <p>Здесь вы можете найти крафтеров для любых нужд.</p>
-        
-        <a href="recipes.html" class="btn">Открыть список рецептов</a>
+    <div class="cover-area">
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="recipes.html">База рецептов</a>
+        </nav>
     </div>
 
+    <div class="container">
+        <div class="hero">
+            <h1>Добро пожаловать в базу знаний нашей гильдии</h1>
+            <p>Здесь вы можете найти крафтеров и доступные у них рецепты. Нажмите на кнопку ниже, чтобы открыть страницу с рецептами.</p>
+            <a href="recipes.html" class="btn">Открыть страницу - База рецептов</a>
+        </div>
+    </div>
 </body>
 </html>

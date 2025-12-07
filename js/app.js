@@ -1,4 +1,4 @@
-// URL ВЕБ-ПРИЛОЖЕНИЯ
+// ВСТАВЬ СЮДА СВОЙ URL ВЕБ-ПРИЛОЖЕНИЯ
 const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTnOVmLIN_8Hu6PqA0/exec"; // Твой URL
 
 // Получаем параметры URL (для режима редактирования)
@@ -121,10 +121,14 @@ function renderTable() {
 
         const tr = document.createElement('tr');
 
-        // Проверка на заголовок категории (---Flasks---)
+        // Проверка на заголовок категории (---[Prof] Type---)
         if (isCategory) {
             tr.className = 'category-row';
-            const cleanName = recipeName.replace(/---/g, '').trim();
+            
+            // --- НОВАЯ ЛОГИКА ОЧИСТКИ для формата ---[Prof] Type---
+            // Удаляем только --- в начале и конце строки
+            let cleanName = recipeName.replace(/^---|---$/g, '').trim(); 
+            
             // colspan: 1 (Рецепт) + количество отображаемых колонок игроков
             const colspanCount = 1 + (isEditMode ? 1 : globalData.userColumns.length); 
             tr.innerHTML = `<td colspan="${colspanCount}">${cleanName}</td>`;

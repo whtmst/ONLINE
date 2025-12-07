@@ -3,29 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>База Рецептов Гильдии O N L I N E</title>
+    <title>Гильдии ONLINE - База рецептов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="cover-area">
         <nav>
             <a href="index.html">Главная</a>
-            <a href="recipes.html">База Рецептов</a>
+            <a href="recipes.html">База рецептов</a>
         </nav>
     </div>
-    
     <div class="container">
-        <h1>База Крафта Гильдии</h1>
+        <h1>База рецептов</h1>
+        <p>Здесь вы можете найти крафтеров и доступные у них рецепты. Выберете профессию или введите название рецепта (на английском языке) в поисковую строку.</p>
 
         <div class="controls">
             <select id="professionFilter">
                 <option value="All">-- Все профессии --</option>
             </select>
-            
+
             <input type="text" id="searchInput" placeholder="Поиск рецепта...">
         </div>
 
-        <div id="loader">Загрузка базы данных...</div>
+        <div id="loader">Загружаю базу данных...</div>
 
         <div class="table-container">
             <table id="recipeTable">
@@ -36,7 +40,6 @@
             </table>
         </div>
     </div>
-
     <script src="js/app.js"></script>
 </body>
 </html>
