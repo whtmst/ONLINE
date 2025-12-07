@@ -16,7 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const clearSearchButton = document.getElementById('clearSearch');
 
-    professionFilter.addEventListener('change', renderTable);
+    // При изменении фильтра сначала обновляется стиль, потом таблица
+    professionFilter.addEventListener('change', () => {
+        updateProfessionFilterStyle(); 
+        renderTable();
+    });
     
     // Отслеживаем ввод и показываем/скрываем крестик
     searchInput.addEventListener('input', () => {
@@ -67,12 +71,24 @@ async function loadData() {
         // ---------------------------------------------------
 
         populateProfessionFilter();
+        updateProfessionFilterStyle();
         renderTable();
         loader.style.display = 'none';
         
     } catch (error) {
         loader.innerHTML = "Ошибка загрузки данных: " + error.message;
         console.error(error);
+    }
+}
+
+function updateProfessionFilterStyle() {
+    const select = document.getElementById('professionFilter');
+    if (select.value === 'All') {
+        // Добавляем класс, когда выбрана опция по умолчанию
+        select.classList.add('placeholder-style');
+    } else {
+        // Удаляем класс, когда выбрана конкретная профессия
+        select.classList.remove('placeholder-style');
     }
 }
 

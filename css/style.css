@@ -16,9 +16,14 @@ body {
     padding: 0;
 }
 
+/* Изменение цвета выделения текста */
+::selection {
+    background: var(--accent-color);
+    color: var(--white-text-color);
+}
+
 .container {
-    max-width: 90%; /* Устанавливаем разумный лимит ширины */
-    width: 100%; /* Добавляем width: 100% для корректной работы на узких экранах */
+    max-width: 90%;
     margin: 0 auto;
     padding: 20px;
 }
@@ -27,20 +32,23 @@ body {
    Header & Navigation
    ========================================= */
 .cover-area {
+    max-width: calc(90% - 40px);
     height: 150px;
     background: url('https://raw.githubusercontent.com/whtmst/T-Guides/refs/heads/main/MISCELLANEOUS/img/T-Guides.png') center center / cover no-repeat;
-    border-radius: 8px 8px 0 0;
-    margin: 0 0 20px 0;
+    border-radius: 0 0 8px 8px;
     display: flex;
     align-items: flex-end;
     position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 nav {
-    width: 100%;
+    max-width: 100%;
+    flex: 1 1 auto;
+    margin: 0 auto;
     padding: 10px 20px;
-    background: rgba(30, 31, 34, 0.9);
+    background: var(--bg-section);
     border-top: 2px solid var(--accent-color);
     border-radius: 0 0 8px 8px;
 }
@@ -118,15 +126,14 @@ h1 {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
-    padding: 20px;
+    padding: 10px;
     background: var(--bg-section);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     flex-wrap: wrap;
 }
 
-select,
-input[type="text"] {
+select, input[type="text"] {
     font-family: var(--font-primary);
     padding: 6.5px;
     border-radius: 5px;
@@ -137,25 +144,31 @@ input[type="text"] {
     flex: 1 1 200px;
 }
 
-select:focus,
-input[type="text"]:focus {
-    outline: none;
-    border-color: var(--accent-color);
+input[type="text"] {
+    width: 100%; /* Нужно убедиться, что поле ввода занимает 100% ширины своего родителя */
+    padding-right: 35px !important; /* Добавляем место для крестика */
 }
 
-input[type="text"]::placeholder {
+select.placeholder-style, input[type="text"]::placeholder {
     color: var(--text-color);
-    opacity: 0.6;
+    opacity: 0.5;
+}
+
+select:focus, input[type="text"]:focus {
+    outline: none;
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    background: var(--bg-main);
+}
+
+select:not(.placeholder-style) {
+    color: var(--text-color);
+    opacity: 1;
 }
 
 .search-wrapper {
     position: relative;
     flex: 1 1 200px; /* Чтобы занимал столько же места, сколько и input */
-}
-
-input[type="text"] {
-    width: 100%; /* Нужно убедиться, что поле ввода занимает 100% ширины своего родителя */
-    padding-right: 35px !important; /* Добавляем место для крестика */
 }
 
 #clearSearch {
@@ -216,8 +229,7 @@ th {
 }
 
 /* Sticky first column */
-td:first-child,
-th:first-child {
+td:first-child, th:first-child {
     position: sticky;
     left: 0;
     background-color: var(--bg-section);
