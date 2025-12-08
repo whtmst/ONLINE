@@ -293,6 +293,10 @@ th {
     text-transform: uppercase;
 }
 
+.th-center {
+    text-align: center;
+}
+
 /* Sticky first column */
 td:first-child,
 th:first-child {
@@ -306,7 +310,6 @@ th:first-child {
 
 /* Отключаем липкую позицию для всех заголовков и первой колонки на мобильных */
 @media (max-width: 1024px) {
-
     th,
     td:first-child,
     th:first-child {
@@ -633,4 +636,51 @@ input[type="password"]:focus {
 .login-btn:hover {
     background: var(--accent-hover-color);
     color: var(--accent-color);
+}
+
+/* =========================================
+   Footer Styles
+   ========================================= */
+.footer {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    background: var(--bg-section);
+    border-radius: 8px 8px 0 0;
+    position: fixed;
+    bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+
+.footer a {
+    color: var(--text-color);
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    padding: 10px 5px;
+    background: transparent;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.footer a:hover {
+    color: var(--text-color);
+    background: var(--accent-color);
+}
+
+.footer p {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: uppercase;
+}
+
+.footer-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
 }

@@ -262,7 +262,7 @@ function renderTable() {
       }
     });
   } else {
-    headerRow.innerHTML += `<th>Кто крафтит</th>`;
+    headerRow.innerHTML += `<th class="th-center">Кто крафтит</th>`;
   }
   thead.appendChild(headerRow);
 
