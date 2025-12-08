@@ -56,13 +56,14 @@
 </head>
 <body>
     <div class="main-wrapper">
-        <div class="cover-area">
-            <nav>
-                <a href="index.html">Главная</a>
-                <a href="recipes.html">База рецептов</a>
-                <a href="https://github.com/whtmst/T-Guides" target="_blank" rel="noopener noreferrer">T-Guides</a>
-            </nav>
-        </div>
+        <div class="cover-area"></div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="recipes.html">База рецептов</a>
+            <a href="https://github.com/whtmst/T-Guides" target="_blank" rel="noopener noreferrer">T-Guides</a>
+            <a href="#" id="loginLink">ВОЙТИ</a>
+            <span id="logoutBtn" class="logout-btn" title="Выйти">❌</span>
+        </nav>
         <div class="container">
             <div class="hero">
                 <h1>Добро пожаловать в базу знаний нашей гильдии</h1>
@@ -71,5 +72,20 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно входа -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content" style="max-width: 350px;">
+            <span class="close-modal" id="closeLoginModal">❌</span>
+            <h2>Вход для крафтера</h2>
+            <div class="login-form">
+                <input type="text" id="loginUser" placeholder="Ваш логин (user)">
+                <input type="password" id="loginToken" placeholder="Ваш токен (token)">
+                <button class="login-btn" id="performLogin">Войти</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
 </body>
 </html>

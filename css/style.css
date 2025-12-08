@@ -35,9 +35,18 @@ textarea {
 
 /* ГЛАВНЫЙ КОНТЕЙНЕР-ОБЕРТКА */
 .main-wrapper {
-    max-width: 90%;
+    max-width: 70%;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* ГЛАВНЫЙ КОНТЕЙНЕР-ОБЕРТКА МОБИЛЬНЫЕ УСТРОЙСТВА */
+@media (max-width: 1024px) {
+    .main-wrapper {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
 }
 
 .container {
@@ -59,12 +68,16 @@ textarea {
 
 nav {
     max-width: 100%;
-    flex: 1 1 auto;
     margin: 0 auto;
     padding: 0 20px;
     background: var(--bg-section);
     border-top: 2px solid var(--accent-color);
     border-radius: 0 0 8px 8px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
 }
 
 nav a {
@@ -82,6 +95,24 @@ nav a {
 nav a:hover {
     color: var(--text-color);
     background: var(--accent-color);
+}
+
+nav #loginLink {
+    margin-left: auto;
+}
+
+.logout-btn {
+    cursor: pointer;
+    font-size: 1.1em;
+    padding: 10px 5px;
+    color: var(--unsuccess-color);
+    display: none;
+    margin-left: 10px;
+    font-family: var(--font-emoji);
+}
+
+.logout-btn:hover {
+    opacity: 0.7;
 }
 
 /* =========================================
@@ -224,17 +255,22 @@ select:not(.placeholder-style) {
    Data Tables
    ========================================= */
 .table-container {
-    overflow-x: auto;
+    /* overflow-x: auto; - Убираем скролл, чтобы работал Sticky Header на ПК */
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    max-height: 100%;
-    height: 500px;
+}
+
+/* Возвращаем скролл для мобильных/планшетов */
+@media (max-width: 1024px) {
+    .table-container {
+        overflow-x: auto;
+    }
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px;
+    min-width: 650px;
     background: var(--bg-section);
 }
 
@@ -249,8 +285,8 @@ td {
 th {
     background-color: var(--bg-section);
     position: sticky;
-    top: 0;
-    z-index: 10;
+    top: 42px;
+    z-index: 90;
     color: var(--accent-color);
     font-size: 1.1em;
     font-weight: 700;
@@ -268,8 +304,19 @@ th:first-child {
     border-right: 1px solid var(--border-color);
 }
 
+/* Отключаем липкую позицию для всех заголовков и первой колонки на мобильных */
+@media (max-width: 1024px) {
+
+    th,
+    td:first-child,
+    th:first-child {
+        position: static;
+        border-right: 1px solid var(--border-color);
+    }
+}
+
 th:first-child {
-    z-index: 15;
+    z-index: 95;
     background-color: var(--bg-section);
 }
 
@@ -388,11 +435,11 @@ tr.category-row td {
     text-align: center;
 }
 
-.slider-checkbox:checked + .slider-label .slider-inner {
+.slider-checkbox:checked+.slider-label .slider-inner {
     margin-left: 0;
 }
 
-.slider-checkbox:checked + .slider-label {
+.slider-checkbox:checked+.slider-label {
     border: 2px solid var(--accent-hover-color);
     opacity: 1;
 }
@@ -464,6 +511,11 @@ tr.category-row td {
     opacity: 1;
 }
 
+/* Стили H2, применимые только к модалке крафтеров */
+#craftersModal h2 {
+    text-align: center;
+}
+
 .crafter-list {
     list-style: none;
     padding: 0;
@@ -507,4 +559,78 @@ tr.category-row td {
     background: var(--accent-color);
     border-color: var(--accent-color);
     color: var(--white-text-color);
+}
+
+/* =========================================
+   Login Form Styles
+   ========================================= */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Стили H2, применимые только к модалке входа */
+#loginModal h2 {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    background: var(--bg-section);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 5px;
+    flex: 0 0 auto;
+}
+
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: var(--bg-main);
+}
+
+#loginUser,
+#loginToken {
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#loginUser::placeholder,
+#loginToken::placeholder {
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    opacity: 0.5;
+}
+
+#loginUser:focus,
+#loginToken:focus {
+    border-color: var(--accent-color);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent-color);
+    color: var(--white-text-color);
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s;
+}
+
+.login-btn:hover {
+    background: var(--accent-hover-color);
+    color: var(--accent-color);
 }

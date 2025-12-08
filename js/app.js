@@ -1,14 +1,60 @@
 // URL ВЕБ-ПРИЛОЖЕНИЯ
 const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTnOVmLIN_8Hu6PqA0/exec";
 
+// --- ЛОГИКА АВТОРИЗАЦИИ ---
+const SESSION_KEY = 'guild_crafter_session';
+const SESSION_DURATION = 30 * 60 * 1000; // 30 минут
+
+function getSession() {
+  const sessionStr = localStorage.getItem(SESSION_KEY);
+  if (!sessionStr) return null;
+
+  const session = JSON.parse(sessionStr);
+  const now = new Date().getTime();
+
+  if (now > session.expiry) {
+    localStorage.removeItem(SESSION_KEY);
+    return null;
+  }
+  return session;
+}
+
+function saveSession(user, token) {
+  const now = new Date().getTime();
+  const session = {
+    user: user,
+    token: token,
+    expiry: now + SESSION_DURATION
+  };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+}
+
 // Получаем параметры URL (для режима редактирования)
 const urlParams = new URLSearchParams(window.location.search);
-const currentUser = urlParams.get('user');
-const currentToken = urlParams.get('token');
-const isEditMode = currentUser && currentToken;
+const urlUser = urlParams.get('user');
+const urlToken = urlParams.get('token');
+
+// Работа с сессией
+const session = getSession();
+let sessionUser = session ? session.user : null;
+let sessionToken = session ? session.token : null;
+
+// Если в URL есть параметры - обновляем сессию
+if (urlUser && urlToken) {
+  saveSession(urlUser, urlToken);
+  sessionUser = urlUser;
+  sessionToken = urlToken;
+}
+
+// Режим редактирования: ТОЛЬКО если есть параметры в URL
+const isEditMode = !!(urlUser && urlToken);
+// Данные для редактирования берем из URL
+const currentUser = urlUser;
+const currentToken = urlToken;
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  setupAuthUI();
   loadData();
 
   // Слушатели фильтров
@@ -17,50 +63,122 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearSearchButton = document.getElementById('clearSearch');
 
   // При изменении фильтра сначала обновляется стиль, потом таблица
-  professionFilter.addEventListener('change', () => {
-    updateProfessionFilterStyle();
-    renderTable();
-  });
-
-  // Отслеживаем ввод и показываем/скрываем крестик
-  searchInput.addEventListener('input', () => {
-    if (searchInput.value.length > 0) {
-      clearSearchButton.style.display = 'block';
-    } else {
-      clearSearchButton.style.display = 'none';
-    }
-    renderTable(); // Обновляем таблицу при вводе
-  });
-
-  // Обработка клика по крестику
-  clearSearchButton.addEventListener('click', () => {
-    searchInput.value = ''; // Очищаем поле
-    clearSearchButton.style.display = 'none'; // Скрываем крестик
-    renderTable(); // Обновляем таблицу, сбрасывая фильтр поиска
-    searchInput.focus(); // Для удобства можно вернуть фокус
-  });
-
-  // Модальное окно
-  const modal = document.getElementById('craftersModal');
-  const closeBtn = document.querySelector('.close-modal');
-
-  if (closeBtn) {
-    closeBtn.onclick = () => {
-      modal.style.display = "none";
-    };
+  if (professionFilter) {
+    professionFilter.addEventListener('change', () => {
+      updateProfessionFilterStyle();
+      renderTable();
+    });
   }
 
+  // Отслеживаем ввод и показываем/скрываем крестик
+  if (searchInput && clearSearchButton) {
+    searchInput.addEventListener('input', () => {
+      if (searchInput.value.length > 0) {
+        clearSearchButton.style.display = 'block';
+      } else {
+        clearSearchButton.style.display = 'none';
+      }
+      renderTable(); // Обновляем таблицу при вводе
+    });
+
+    // Обработка клика по крестику
+    clearSearchButton.addEventListener('click', () => {
+      searchInput.value = ''; // Очищаем поле
+      clearSearchButton.style.display = 'none'; // Скрываем крестик
+      renderTable(); // Обновляем таблицу, сбрасывая фильтр поиска
+      searchInput.focus(); // Для удобства можно вернуть фокус
+    });
+  }
+
+  // Модальное окно (список крафтеров)
+  const craftersModal = document.getElementById('craftersModal');
+  const loginModal = document.getElementById('loginModal');
+  // Используем querySelectorAll, так как у нас теперь несколько крестиков
+  const closeBtns = document.querySelectorAll('.close-modal');
+
+  closeBtns.forEach(btn => {
+    btn.onclick = function () {
+      if (craftersModal) craftersModal.style.display = "none";
+      if (loginModal) loginModal.style.display = "none";
+    }
+  });
+
   window.onclick = (event) => {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    if (event.target == craftersModal) {
+      craftersModal.style.display = "none";
+    }
+    if (event.target == loginModal) {
+      loginModal.style.display = "none";
     }
   };
 });
+
+function setupAuthUI() {
+  const loginLink = document.getElementById('loginLink');
+  if (!loginLink) return;
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  const loginModal = document.getElementById('loginModal');
+  const performLoginBtn = document.getElementById('performLogin');
+
+  // Если есть активная сессия (sessionUser)
+  if (sessionUser) {
+    loginLink.textContent = sessionUser + ' (Вы)';
+    // Ссылка ведет на страницу с параметрами (режим редактирования)
+    loginLink.href = `recipes.html?user=${sessionUser}&token=${sessionToken}`;
+    loginLink.title = "Нажмите, чтобы перейти в режим редактирования";
+
+    // Показываем кнопку выхода
+    if (logoutBtn) {
+      logoutBtn.style.display = 'inline-block';
+      logoutBtn.onclick = () => {
+        localStorage.removeItem(SESSION_KEY);
+        // Редирект на чистую страницу
+        window.location.href = 'recipes.html';
+      };
+    }
+
+    // При клике на имя обновляем сессию
+    loginLink.onclick = (e) => {
+      saveSession(sessionUser, sessionToken);
+    };
+  } else {
+    // Если не авторизованы
+    loginLink.textContent = "ВОЙТИ";
+    loginLink.href = "#";
+    loginLink.title = "Войти в систему";
+
+    if (logoutBtn) logoutBtn.style.display = 'none';
+
+    loginLink.onclick = (e) => {
+      e.preventDefault();
+      if (loginModal) loginModal.style.display = "block";
+    };
+  }
+
+  // Обработка входа через кнопку
+  if (performLoginBtn) {
+    performLoginBtn.onclick = () => {
+      const user = document.getElementById('loginUser').value.trim();
+      const token = document.getElementById('loginToken').value.trim();
+
+      if (user && token) {
+        saveSession(user, token);
+        // Перезагружаем страницу с параметрами
+        window.location.href = `recipes.html?user=${user}&token=${token}`;
+      } else {
+        alert("Пожалуйста, введите логин и токен");
+      }
+    };
+  }
+}
 
 let globalData = { headers: [], rows: [], userColumns: [] }; // Обновляем структуру данных
 
 async function loadData() {
   const loader = document.getElementById('loader');
+  if (!loader) return;
+
   try {
     const response = await fetch(API_URL);
     const data = await response.json();
@@ -99,6 +217,8 @@ async function loadData() {
 
 function updateProfessionFilterStyle() {
   const select = document.getElementById('professionFilter');
+  if (!select) return;
+
   if (select.value === 'All') {
     // Добавляем класс, когда выбрана опция по умолчанию
     select.classList.add('placeholder-style');
@@ -110,6 +230,8 @@ function updateProfessionFilterStyle() {
 
 function populateProfessionFilter() {
   const select = document.getElementById('professionFilter');
+  if (!select) return;
+
   const professions = [...new Set(globalData.rows.map(row => row[0]))].filter(p => p && !p.startsWith('---'));
 
   professions.forEach(prof => {
@@ -123,6 +245,8 @@ function populateProfessionFilter() {
 function renderTable() {
   const tbody = document.querySelector('#recipeTable tbody');
   const thead = document.querySelector('#recipeTable thead');
+  if (!tbody || !thead) return;
+
   const filterProf = document.getElementById('professionFilter').value;
   const filterText = document.getElementById('searchInput').value.toLowerCase();
 
