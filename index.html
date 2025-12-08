@@ -10,6 +10,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/style.css">
+    <script>
+        // ANSI коды для цветов
+        const colors = {
+            reset: '\x1b[0m',
+            guild: '\x1b[38;2;236;219;186m',     // #ECDBBA (бежевый)
+            online: '\x1b[38;2;200;75;49m',      // #C84B31 (красный)
+            bold: '\x1b[1m'
+        };
+    
+        const guildAscii = colors.guild + colors.bold + [
+            '                                                                          ',
+            '   █████████  █████  █████ █████ █████       ██████████                   ',
+            '  ███░░░░░███░░███  ░░███ ░░███ ░░███       ░░███░░░░███                  ',
+            ' ███     ░░░  ░███   ░███  ░███  ░███        ░███   ░░███                 ',
+            '░███          ░███   ░███  ░███  ░███        ░███    ░███                 ',
+            '░███    █████ ░███   ░███  ░███  ░███        ░███    ░███                 ',
+            '░░███  ░░███  ░███   ░███  ░███  ░███      █ ░███    ███                  ',
+            ' ░░█████████  ░░████████   █████ ███████████ ██████████                   ',
+            '  ░░░░░░░░░    ░░░░░░░░   ░░░░░ ░░░░░░░░░░░ ░░░░░░░░░░                    ',
+            '                                                                           '
+        ].join('\n' + colors.guild + colors.bold) + colors.reset;
+    
+        const onlineAscii = colors.online + colors.bold + [
+            '                                                                          ',
+            '    ███████    ██████   █████ █████       █████ ██████   █████ ██████████ ',
+            '  ███░░░░░███ ░░██████ ░░███ ░░███       ░░███ ░░██████ ░░███ ░░███░░░░░█ ',
+            ' ███     ░░███ ░███░███ ░███  ░███        ░███  ░███░███ ░███  ░███  █ ░  ',
+            '░███      ░███ ░███░░███░███  ░███        ░███  ░███░░███░███  ░██████    ',
+            '░███      ░███ ░███ ░░██████  ░███        ░███  ░███ ░░██████  ░███░░█    ',
+            '░░███     ███  ░███  ░░█████  ░███      █ ░███  ░███  ░░█████  ░███ ░   █ ',
+            ' ░░░███████░   █████  ░░█████ ███████████ █████ █████  ░░█████ ██████████ ',
+            '   ░░░░░░░    ░░░░░    ░░░░░ ░░░░░░░░░░░ ░░░░░ ░░░░░    ░░░░░ ░░░░░░░░░░  ',
+            '                                                                           '
+        ].join('\n' + colors.online + colors.bold) + colors.reset;
+    
+        // Вывод в консоль
+        console.log(guildAscii);
+        console.log(onlineAscii);
+    
+        // Простое сообщение
+        console.log(colors.guild + 'Made with ❤️ by' + colors.reset + colors.online + ' Wht Mst' + colors.reset);
+        console.log(colors.online + 'https://github.com/whtmst' + colors.reset);
+    </script>
 </head>
 <body>
     <div class="main-wrapper">
@@ -17,6 +60,7 @@
             <nav>
                 <a href="index.html">Главная</a>
                 <a href="recipes.html">База рецептов</a>
+                <a href="https://github.com/whtmst/T-Guides" target="_blank" rel="noopener noreferrer">T-Guides</a>
             </nav>
         </div>
         <div class="container">
