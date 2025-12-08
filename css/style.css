@@ -254,6 +254,7 @@ th {
     color: var(--accent-color);
     font-size: 1.1em;
     font-weight: 700;
+    text-transform: uppercase;
 }
 
 /* Sticky first column */
@@ -280,6 +281,7 @@ tr.category-row td {
     text-align: center;
     padding: 8px;
     font-size: 1.1em;
+    text-transform: uppercase;
 }
 
 /* =========================================
@@ -451,6 +453,7 @@ tr.category-row td {
     cursor: pointer;
     line-height: 1;
     opacity: 0.5;
+    transition: opacity 0.3s;
 }
 
 .close-modal:hover,
@@ -497,6 +500,7 @@ tr.category-row td {
     transition: all 0.2s;
     font-size: 1.1em;
     font-family: var(--font-primary);
+    text-transform: uppercase;
 }
 
 .crafters-btn:hover {

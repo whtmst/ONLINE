@@ -236,7 +236,7 @@ function renderTable() {
       });
 
       const count = crafters.length;
-      const btnText = count > 0 ? `<span class="btn-emoji">👥</span> Показать (${count})` : `<span class="btn-emoji">❌</span> Никого`;
+      const btnText = count > 0 ? `<span class="btn-emoji">👁️</span> Показать (${count})` : `<span class="btn-emoji">🚫</span> Никого`;
       const btnClass = count > 0 ? '' : 'style="opacity: 0.5; cursor: default;"';
       const onClick = count > 0 ? 'onclick="openCraftersModal(this)"' : '';
       const btnTitle = count > 0 ? 'Показать список' : 'Никто не умеет крафтить этот предмет';
