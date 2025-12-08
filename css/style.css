@@ -19,6 +19,14 @@ body {
     padding: 0;
 }
 
+/* Наследование шрифта для элементов форм */
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
 /* Изменение цвета выделения текста */
 ::selection {
     background: var(--accent-color);
@@ -220,6 +228,7 @@ select:not(.placeholder-style) {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     max-height: 100%;
+    height: 500px;
 }
 
 table {
@@ -286,6 +295,12 @@ tr.category-row td {
     /* Убедимся, что padding от th/td не ломается */
 }
 
+.action-cell {
+    padding: 5px 15px !important;
+    text-align: center;
+    vertical-align: middle;
+}
+
 .link-icon {
     font-family: var(--font-emoji);
     /* Используем стандартный шрифт для эмодзи, чтобы значок был цветным */
@@ -303,19 +318,81 @@ tr.category-row td {
 }
 
 /* =========================================
-   Status Icons & Utilities
+   Slider Toggle (Custom Checkbox)
    ========================================= */
-.status-icon {
-    font-family: var(--font-emoji);
-    font-size: 1.1em;
+.slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
-.has-recipe {
-    color: var(--success-color);
+.slider {
+    border: none;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 125px;
 }
 
-.no-recipe {
-    color: var(--unsuccess-color);
+.slider-checkbox {
+    display: none;
+}
+
+.slider-label {
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.25;
+    transition: opacity 3s;
+}
+
+.slider-inner {
+    display: block;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+    width: 200%;
+}
+
+.slider-inner:before,
+.slider-inner:after {
+    box-sizing: border-box;
+    display: block;
+    float: left;
+    font-family: var(--font-primary);
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    width: 50%;
+}
+
+.slider-inner:before {
+    background-color: var(--success-color);
+    color: var(--text-color);
+    content: "КРАФЧУ";
+    text-align: center;
+}
+
+.slider-inner:after {
+    background-color: var(--unsuccess-color);
+    color: var(--text-color);
+    content: "НЕ КРАФЧУ";
+    text-align: center;
+}
+
+.slider-checkbox:checked + .slider-label .slider-inner {
+    margin-left: 0;
+}
+
+.slider-checkbox:checked + .slider-label {
+    border: 2px solid var(--accent-hover-color);
+    opacity: 1;
 }
 
 #loader {
@@ -323,4 +400,107 @@ tr.category-row td {
     font-size: 1.5em;
     padding: 50px;
     color: var(--accent-color);
+}
+
+/* =========================================
+   Modal Styles
+   ========================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--bg-section);
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-modal {
+    float: right;
+    font-family: var(--font-emoji);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.5;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: var(--accent-color);
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.crafter-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.crafter-list li {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 1.1em;
+    font-family: var(--font-primary);
+}
+
+.btn-emoji {
+    font-family: var(--font-emoji);
+    margin-right: 6px;
+    font-style: normal;
+}
+
+.crafter-list li:last-child {
+    border-bottom: none;
+}
+
+.crafters-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1.1em;
+    font-family: var(--font-primary);
+}
+
+.crafters-btn:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--white-text-color);
 }
