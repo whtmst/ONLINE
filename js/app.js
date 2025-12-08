@@ -218,24 +218,45 @@ function renderTable() {
     });
 }
 
-// Отправка данных на сервер
-function updateRecipe(profession, recipeName, isChecked) {
+// Отправка данных на сервер с обработкой ошибок
+async function updateRecipe(profession, recipeName, isChecked) {
     if (!isEditMode) return;
 
-    console.log(`Sending: ${recipeName} -> ${isChecked}`);
+    const checkbox = event.target; // Сохраняем ссылку на чекбокс
+    
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user: currentUser,
+                token: currentToken,
+                profession: profession,
+                recipe: recipeName,
+                value: isChecked
+            })
+        });
 
-    fetch(API_URL, {
-        method: 'POST',
-        mode: 'no-cors', 
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            user: currentUser,
-            token: currentToken,
-            profession: profession,
-            recipe: recipeName,
-            value: isChecked
-        })
-    }).catch(err => console.error("Ошибка сохранения", err));
+        const result = await response.json();
+        
+        // Проверка ответа сервера
+        if (result.status === 'error') {
+            // Если ошибка — откатываем галочку
+            checkbox.checked = !isChecked;
+            
+            // Показываем уведомление
+            alert(`Ошибка: ${result.message}`);
+            console.error('Server error:', result.message);
+        } else {
+            console.log(`Успешно: ${recipeName} -> ${isChecked}`);
+        }
+        
+    } catch (err) {
+        // Если вообще не дошло до сервера — откатываем галочку
+        checkbox.checked = !isChecked;
+        alert('Ошибка соединения с сервером');
+        console.error('Fetch error:', err);
+    }
 }
