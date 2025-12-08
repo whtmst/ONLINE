@@ -76,7 +76,7 @@ async function loadData() {
         loader.style.display = 'none';
         
     } catch (error) {
-        loader.innerHTML = "Ошибка загрузки данных: " + error.message;
+        loader.innerHTML = "Не удалось загрузить базу данных: " + error.message;
         console.error(error);
     }
 }
@@ -225,10 +225,13 @@ async function updateRecipe(profession, recipeName, isChecked) {
     const checkbox = event.target; // Сохраняем ссылку на чекбокс
     
     try {
+        // Мы используем 'text/plain', чтобы избежать CORS Preflight (OPTIONS) запроса.
+        // Google Apps Script все равно прочитает тело как строку и распарсит JSON.
         const response = await fetch(API_URL, {
             method: 'POST',
+            redirect: "follow",
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'text/plain;charset=utf-8',
             },
             body: JSON.stringify({
                 user: currentUser,
@@ -243,18 +246,18 @@ async function updateRecipe(profession, recipeName, isChecked) {
         
         // Проверка ответа сервера
         if (result.status === 'error') {
-            // Если ошибка — откатываем галочку
+            // Если ошибка - откатываем галочку
             checkbox.checked = !isChecked;
             
             // Показываем уведомление
-            alert(`Ошибка: ${result.message}`);
+            alert(`Не удалось сохранить: ${result.message}`);
             console.error('Server error:', result.message);
         } else {
-            console.log(`Успешно: ${recipeName} -> ${isChecked}`);
+            console.log(`Успешно обновлено: ${recipeName} -> ${isChecked}`);
         }
         
     } catch (err) {
-        // Если вообще не дошло до сервера — откатываем галочку
+        // Если вообще не дошло до сервера - откатываем галочку
         checkbox.checked = !isChecked;
         alert('Ошибка соединения с сервером');
         console.error('Fetch error:', err);
