@@ -693,3 +693,43 @@ input[type="password"]:focus {
     display: flex;
     align-items: center;
 }
+
+/* =========================================
+   PWA INSTALL BUTTON STYLES
+   ========================================= */
+#installAppBtn {
+    /* Добавляем базовые стили для мобильных устройств */
+    position: fixed;
+    /* Прибиваем к экрану */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    /* Поверх всего */
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* Анимация: Кнопка скрыта за пределами экрана */
+    transform: translateY(-100%);
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease;
+    opacity: 0;
+    /* Стиль .btn уже задает фон, текст и т.д. */
+}
+
+/* Стилизация для показа (будет добавлена JS) */
+.show-install-banner {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ❌ СКРЫВАЕМ КНОПКУ НА ПК (ЭКРАНЫ ШИРЕ 1024px) */
+@media (min-width: 1025px) {
+    #installAppBtn {
+        /* Принудительно скрываем на больших экранах */
+        display: none !important;
+    }
+}
+
+/* Стили для МОБИЛЬНЫХ устройств (меньше 1025px) */
+@media (max-width: 1024px) {
+    /* Если кнопка не найдена в .main-wrapper, можно убедиться, что она всегда поверх */
+}

@@ -111,44 +111,65 @@ document.addEventListener('DOMContentLoaded', () => {
       loginModal.style.display = "none";
     }
   };
-  
+
   // --- PWA Логика установки ---
   let deferredPrompt;
   const installBtn = document.getElementById('installAppBtn');
-  
+  // Добавляем переменную для управления таймером скрытия
+  let hideTimer;
+
   window.addEventListener('beforeinstallprompt', (e) => {
-      // 1. Предотвращаем автоматическое появление
-      e.preventDefault();
-      // 2. Сохраняем событие
-      deferredPrompt = e;
-      // 3. Показываем нашу кнопку установки
-      if (installBtn) {
-          installBtn.style.display = 'block';
-      }
-      console.log('Пойман beforeinstallprompt, кнопка показана');
-      // 
+    // 1. Предотвращаем автоматическое появление
+    e.preventDefault();
+    // 2. Сохраняем событие
+    deferredPrompt = e;
+
+    if (installBtn) {
+      // Очищаем предыдущий таймер на всякий случай
+      clearTimeout(hideTimer);
+      // 3. Показываем нашу кнопку/баннер (CSS сделает ее видимой и анимирует)
+      // ВАЖНО: На ПК эта кнопка скрыта через CSS Media Query.
+      installBtn.classList.add('show-install-banner');
+
+      console.log('Пойман beforeinstallprompt, баннер показан.');
+
+      // 4. Скрываем баннер через 5 секунд (5000 мс)
+      hideTimer = setTimeout(() => {
+        if (installBtn && deferredPrompt) {
+          // Если пользователь не нажал, убираем баннер, плавно уезжая вверх
+          installBtn.classList.remove('show-install-banner');
+          console.log('Баннер скрыт по таймауту.');
+        }
+      }, 5000);
+    }
   });
-  
+
   if (installBtn) {
-      installBtn.addEventListener('click', async () => {
-          if (!deferredPrompt) return;
-          // 4. Показываем системный промпт
-          deferredPrompt.prompt();
-          // 5. Ждем выбора пользователя
-          const { outcome } = await deferredPrompt.userChoice;
-          console.log(`Пользователь выбрал: ${outcome}`);
-          // 6. Обнуляем переменную и скрываем кнопку
-          deferredPrompt = null;
-          installBtn.style.display = 'none';
-      });
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      // 4.1. Сразу убираем таймер и скрываем баннер
+      clearTimeout(hideTimer);
+      installBtn.classList.remove('show-install-banner');
+      // 5. Показываем системный промпт
+      deferredPrompt.prompt();
+      // 6. Ждем выбора пользователя
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`Пользователь выбрал: ${outcome}`);
+      // 7. Обнуляем переменную
+      deferredPrompt = null;
+    });
   }
-  
+
   // Опционально: слушаем, если приложение уже установлено
   window.addEventListener('appinstalled', () => {
-      console.log('Приложение установлено');
-      if (installBtn) installBtn.style.display = 'none';
+    console.log('Приложение установлено');
+    if (installBtn) {
+      // 8. Убираем баннер, если он был виден
+      clearTimeout(hideTimer);
+      installBtn.classList.remove('show-install-banner');
+    }
   });
-});
+}); // <-- конец DOMContentLoaded
 
 function setupAuthUI() {
   const loginLink = document.getElementById('loginLink');
