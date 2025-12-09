@@ -98,5 +98,18 @@
     </div>
 
     <script src="js/app.js"></script>
+    <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('sw.js')
+                        .then(registration => {
+                            console.log('Service Worker зарегистрирован успешно:', registration.scope);
+                        })
+                        .catch(error => {
+                            console.error('Ошибка регистрации Service Worker:', error);
+                        });
+                });
+            }
+    </script>
 </body>
 </html>
