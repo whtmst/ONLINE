@@ -3,6 +3,7 @@
    ========================================= */
 html {
     box-sizing: border-box;
+    height: 100%;
 }
 
 *,
@@ -17,6 +18,9 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Наследование шрифта для элементов форм */
@@ -36,8 +40,12 @@ textarea {
 /* ГЛАВНЫЙ КОНТЕЙНЕР-ОБЕРТКА */
 .main-wrapper {
     max-width: 70%;
+    width: 100%;
     margin: 0 auto;
     padding: 0 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* ГЛАВНЫЙ КОНТЕЙНЕР-ОБЕРТКА МОБИЛЬНЫЕ УСТРОЙСТВА */
@@ -68,6 +76,7 @@ textarea {
 
 nav {
     max-width: 100%;
+    width: 100%;
     margin: 0 auto;
     padding: 0 20px;
     background: var(--bg-section);
@@ -182,6 +191,7 @@ h1 {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 select,
@@ -255,7 +265,6 @@ select:not(.placeholder-style) {
    Data Tables
    ========================================= */
 .table-container {
-    /* overflow-x: auto; - Убираем скролл, чтобы работал Sticky Header на ПК */
     border: 1px solid var(--border-color);
     border-radius: 8px;
 }
@@ -310,6 +319,7 @@ th:first-child {
 
 /* Отключаем липкую позицию для всех заголовков и первой колонки на мобильных */
 @media (max-width: 1024px) {
+
     th,
     td:first-child,
     th:first-child {
@@ -643,12 +653,11 @@ input[type="password"]:focus {
    ========================================= */
 .footer {
     max-width: 100%;
-    margin: 0 auto;
+    width: 100%;
+    margin-top: auto;
     padding: 0 20px;
     background: var(--bg-section);
     border-radius: 8px 8px 0 0;
-    position: fixed;
-    bottom: 0;
     z-index: 100;
     display: flex;
     align-items: center;
