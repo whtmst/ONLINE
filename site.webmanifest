@@ -1,19 +1,23 @@
 {
-"name": "Гильдии ONLINE",
-"short_name": "ONLINE",
-"icons": [
-    {
-        "src": "assets/img/android-chrome-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-    },
-    {
-        "src": "assets/img/android-chrome-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-    }
-],
-"theme_color": "#191919",
-"background_color": "#191919",
-"display": "standalone"
+    "name": "Гильдии ONLINE",
+    "short_name": "ONLINE",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#191919",
+    "theme_color": "#191919",
+    "icons": [
+        {
+            "src": "assets/img/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "assets/img/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
 }
