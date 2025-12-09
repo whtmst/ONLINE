@@ -104,7 +104,7 @@ textarea {
     height: 100%;
 
     /* Изображение, которое будет зумироваться */
-    background: url('assets/img/cover.jpg') center center / cover no-repeat;
+    background: url('../assets/img/cover.jpg') center center / cover no-repeat;
 
     /* ВРЕМЯ АНИМАЦИИ */
     animation: coverZoom 60s linear forwards;
