@@ -191,6 +191,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // INFO: --- МОБИЛЬНОЕ МЕНЮ (БУРГЕР) ---
+    const burgerBtn = document.getElementById('burgerBtn');
+    const navLinks = document.getElementById('navLinks');
+    const navElement = document.querySelector('nav'); // <--- Находим сам навбар
+  
+    if (burgerBtn && navLinks && navElement) {
+      burgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        burgerBtn.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        navElement.classList.toggle('menu-open'); // <--- Переключаем класс на nav
+      });
+  
+      // Закрытие меню при клике вне его области
+      document.addEventListener('click', (e) => {
+        if (navLinks.classList.contains('active') && !navLinks.contains(e.target)) {
+          burgerBtn.classList.remove('active');
+          navLinks.classList.remove('active');
+          navElement.classList.remove('menu-open'); // <--- Убираем класс с nav
+        }
+      });
+  
+      // Закрытие меню при клике на ссылку
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          burgerBtn.classList.remove('active');
+          navLinks.classList.remove('active');
+          navElement.classList.remove('menu-open'); // <--- Убираем класс с nav
+        });
+      });
+    }
+
 });
 // INFO: --- КОНЕЦ DOMContentLoaded ---
 

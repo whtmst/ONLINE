@@ -763,3 +763,151 @@ input[type="password"]:focus {
         display: none !important;
     }
 }
+
+/* INFO: = MOBILE MENU & RESPONSIVE NAV ==================== */
+
+/* Сброс стандартных стилей кнопки бургера */
+.burger-menu {
+    display: none;
+    /* Скрыт на ПК */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 20px;
+    position: relative;
+    z-index: 101;
+    margin-right: 15px;
+    /* Отступ от края или логотипа */
+}
+
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-color);
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.burger-menu span:nth-child(1) {
+    top: 0;
+}
+
+.burger-menu span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+}
+
+.burger-menu span:nth-child(3) {
+    bottom: 0;
+}
+
+/* Анимация крестика при открытии */
+.burger-menu.active span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 9px;
+    background-color: var(--accent-color);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg);
+    bottom: 9px;
+    background-color: var(--accent-color);
+}
+
+/* Группировка ссылок для ПК */
+.nav-links {
+    display: flex;
+    gap: 5px;
+}
+
+/* Блок авторизации прижимаем вправо */
+.nav-auth {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+/* MEDIA QUERY ДЛЯ МОБИЛЬНЫХ (<= 1024px) */
+@media (max-width: 1024px) {
+    nav {
+        justify-content: space-between;
+        /* Распределяем: Бургер - Авторизация */
+        position: sticky;
+        /* Убеждаемся, что хедер липкий */
+    }
+
+    /* Когда меню открыто, убираем скругление у самого nav */
+    nav.menu-open {
+        border-radius: 0;
+        /* Можно добавить плавность, чтобы углы не исчезали резко */
+        transition: border-radius 0.1s ease;
+    }
+
+    .burger-menu {
+        display: block;
+        /* Показываем бургер */
+    }
+
+    /* Скрываем ссылки по умолчанию и настраиваем выпадающее меню */
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        /* Выпадает сразу под хедером */
+        left: 0;
+        width: 100%;
+        background: var(--bg-section);
+        flex-direction: column;
+        align-items: center;
+        border-top: 2px solid var(--accent-color);
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.65);
+        z-index: 99;
+    }
+
+    /* Класс active добавляется JS-ом */
+    .nav-links.active {
+        display: flex;
+        animation: fadeInMenu 0.3s ease forwards;
+        gap: 0;
+    }
+
+    /* Стили ссылок внутри открытого меню */
+    .nav-links a {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 15px 25px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
+    }
+
+    .nav-links a:hover {
+        color: var(--text-color);
+        background: var(--accent-color);
+    }
+}
+
+@keyframes fadeInMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
