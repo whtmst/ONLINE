@@ -1,1 +1,1 @@
-Made with ❤️ by [Wht Mst](https://github.com/whtmst)
+Made with ❤️ by [Wht Mst](https://dalink.to/whtmst)
