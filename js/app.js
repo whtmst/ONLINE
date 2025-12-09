@@ -458,3 +458,41 @@ function openCraftersModal(btn) {
 
   modal.style.display = "block";
 }
+
+// --- PWA Логика установки ---
+
+let deferredPrompt;
+const installBtn = document.getElementById('installAppBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // 1. Предотвращаем автоматическое появление
+    e.preventDefault();
+    // 2. Сохраняем событие
+    deferredPrompt = e;
+    // 3. Показываем нашу кнопку установки
+    if (installBtn) {
+        installBtn.style.display = 'block';
+    }
+    console.log('Пойман beforeinstallprompt, кнопка показана');
+    // 
+});
+
+if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        // 4. Показываем системный промпт
+        deferredPrompt.prompt();
+        // 5. Ждем выбора пользователя
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`Пользователь выбрал: ${outcome}`);
+        // 6. Обнуляем переменную и скрываем кнопку
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+    });
+}
+
+// Опционально: слушаем, если приложение уже установлено
+window.addEventListener('appinstalled', () => {
+    console.log('Приложение установлено');
+    if (installBtn) installBtn.style.display = 'none';
+});
