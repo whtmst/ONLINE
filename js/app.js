@@ -257,7 +257,7 @@ function renderTable() {
 
   if (isEditMode) {
     globalData.userColumns.forEach(userCol => {
-      if (userCol.name === currentUser) {
+      if (userCol.name.toLowerCase() === currentUser.toLowerCase()) {
         headerRow.innerHTML += `<th>${userCol.name} (Вы)</th>`;
       }
     });
@@ -329,7 +329,7 @@ function renderTable() {
 
     if (isEditMode) {
       // Режим редактирования: показываем чекбокс только для текущего пользователя
-      const userCol = globalData.userColumns.find(col => col.name === currentUser);
+      const userCol = globalData.userColumns.find(col => col.name.toLowerCase() === currentUser.toLowerCase());
       if (userCol) {
         const hasRecipe = row[userCol.index] === true;
         const checked = hasRecipe ? 'checked' : '';
