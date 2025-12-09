@@ -169,6 +169,21 @@ document.addEventListener('DOMContentLoaded', () => {  // <-- начало DOMCo
       installBtn.classList.remove('show-install-banner');
     }
   });
+
+  // --- Логика рандомного цвета для футера
+  const footerLink = document.querySelector('.footer a');
+
+  if (footerLink) {
+    // Событие: Мышь наведена
+    footerLink.addEventListener('mouseenter', () => {
+      // Генерируем новый цвет
+      const newColor = getRandomLightColor();
+
+      // Применяем новый цвет как inline-стиль.
+      // Это переопределяет старый цвет, если он был
+      footerLink.style.color = newColor;
+    });
+  }
 }); // <-- конец DOMContentLoaded
 
 function setupAuthUI() {
@@ -536,4 +551,31 @@ function openCraftersModal(btn) {
   }
 
   modal.style.display = "block";
+}
+
+// --- Вспомогательная функция для генерации светлого цвета ---
+
+/**
+ * Преобразует HSL (Hue, Saturation, Lightness) в HEX-цвет.
+ * Это нужно для контроля Светлоты (L), чтобы цвет был ярким на темном фоне.
+ */
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+/**
+ * Генерирует случайный светлый цвет (L=75%) для темного фона.
+ */
+function getRandomLightColor() {
+  const h = Math.floor(Math.random() * 360); // Случайный Оттенок (0-359)
+  const s = 100; // Полная Насыщенность
+  const l = 75;  // Высокая Светлота (L>70% отлично видно на черном/темно-сером)
+  return hslToHex(h, s, l);
 }

@@ -663,34 +663,38 @@ input[type="password"]:focus {
 }
 
 .footer a {
-    color: var(--text-color);
+    color: var(--accent-color);
     text-decoration: none;
-    display: inline-block;
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1em;
     text-transform: uppercase;
-    padding: 10px 5px;
     background: transparent;
-    transition: color 0.2s, background-color 0.2s;
+    opacity: 1;
+    transition: opacity 0.5s, color 0.5s;
 }
 
 .footer a:hover {
-    color: var(--text-color);
-    background: var(--accent-color);
+    opacity: 0.5;
 }
 
 .footer p {
     color: var(--text-color);
     text-decoration: none;
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 0.8em;
     text-transform: uppercase;
+    text-align: center;
+}
+
+.footer-text-muted {
+    opacity: 0.5;
 }
 
 .footer-content {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 /* =========================================
