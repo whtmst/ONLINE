@@ -1,6 +1,4 @@
-/* =========================================
-   Global Styles
-   ========================================= */
+/* INFO: = GLOBAL STYLES ==================== */
 html {
     box-sizing: border-box;
     height: 100%;
@@ -61,16 +59,58 @@ textarea {
     padding: 20px 0;
 }
 
-/* =========================================
-   Header & Navigation
-   ========================================= */
+/* INFO: = ANIMATIONS ==================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes coverZoom {
+    0% {
+        transform: scale(1);
+        /* Начальный размер (100%) */
+    }
+
+    100% {
+        transform: scale(1.25);
+        /* Конечный размер (125%) */
+    }
+}
+
+/* INFO: = HEADER & NAVIGATION ==================== */
 .cover-area {
     height: 150px;
-    background: url('https://raw.githubusercontent.com/whtmst/T-Guides/refs/heads/main/MISCELLANEOUS/img/T-Guides.png') center center / cover no-repeat;
+    background: var(--bg-section);
     display: flex;
     align-items: flex-end;
     position: relative;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.cover-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Изображение, которое будет зумироваться */
+    background: url('/assets/img/cover.jpg') center center / cover no-repeat;
+
+    /* ВРЕМЯ АНИМАЦИИ */
+    animation: coverZoom 60s linear forwards;
+
+    /* ДОБАВЛЯЕМ ДЛЯ ПОВЫШЕНИЯ ПРИОРИТЕТА GPU */
+    will-change: transform;
 }
 
 nav {
@@ -125,9 +165,7 @@ nav #loginLink {
     opacity: 1;
 }
 
-/* =========================================
-   Typography
-   ========================================= */
+/* INFO: = TYPOGRAPHY ==================== */
 h1 {
     color: var(--accent-color);
     text-align: center;
@@ -137,9 +175,7 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
-/* =========================================
-   Hero Section & Buttons
-   ========================================= */
+/* INFO: = HERO SECTION & BUTTONS ==================== */
 .hero {
     text-align: center;
     padding: 50px 0;
@@ -180,9 +216,7 @@ h1 {
     opacity: 0.95;
 }
 
-/* =========================================
-   Controls (Filters & Search)
-   ========================================= */
+/* INFO: = CONTROLS (FILTERS & SEARCH) ==================== */
 .controls {
     display: flex;
     gap: 15px;
@@ -260,9 +294,7 @@ select:not(.placeholder-style) {
     opacity: 1;
 }
 
-/* =========================================
-   Data Tables
-   ========================================= */
+/* INFO: = DATA TABLES ==================== */
 .table-container {
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -305,7 +337,7 @@ th {
     text-align: center;
 }
 
-/* Sticky first column */
+/* Липкость для первой колонки */
 td:first-child,
 th:first-child {
     position: sticky;
@@ -343,9 +375,7 @@ tr.category-row td {
     text-transform: uppercase;
 }
 
-/* =========================================
-   Link Icon Custom Styles (NEW)
-   ========================================= */
+/* INFO: = LINK ICON CUSTOM STYLES ==================== */
 .recipe-cell {
     display: flex;
     /* Делаем ячейку контейнером для выравнивания */
@@ -378,9 +408,7 @@ tr.category-row td {
     opacity: 1;
 }
 
-/* =========================================
-   Slider Toggle (Custom Checkbox)
-   ========================================= */
+/* INFO: = SLIDER TOGGLE (CUSTOM CHECKBOX) ==================== */
 .slider-container {
     display: flex;
     justify-content: center;
@@ -463,9 +491,7 @@ tr.category-row td {
     color: var(--accent-color);
 }
 
-/* =========================================
-   Modal Styles
-   ========================================= */
+/* INFO: = MODAL STYLES ==================== */
 .modal {
     display: none;
     position: fixed;
@@ -490,18 +516,6 @@ tr.category-row td {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     position: relative;
     animation: fadeIn 0.3s;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .close-modal {
@@ -573,9 +587,7 @@ tr.category-row td {
     color: var(--white-text-color);
 }
 
-/* =========================================
-   Login Form Styles
-   ========================================= */
+/* INFO: = LOGIN FORM STYLES ==================== */
 .login-form {
     display: flex;
     flex-direction: column;
@@ -647,9 +659,7 @@ input[type="password"]:focus {
     color: var(--accent-color);
 }
 
-/* =========================================
-   Footer Styles
-   ========================================= */
+/* INFO: = FOOTER STYLES ==================== */
 .footer {
     max-width: 100%;
     width: 100%;
@@ -697,9 +707,7 @@ input[type="password"]:focus {
     justify-content: center;
 }
 
-/* =========================================
-   PWA INSTALL BANNER STYLES (Dynamic & Smooth)
-   ========================================= */
+/* INFO: = PWA INSTALL BANNER ==================== */
 #installAppBtn {
     margin: 0;
     /* Начальное состояние: скрыто и прозрачно */
@@ -737,7 +745,7 @@ input[type="password"]:focus {
             opacity 0.6s ease-in,
             box-shadow 0.8s ease;
     }
-    
+
     /* Класс появления с эффектом отскока (Bounce) */
     #installAppBtn.show-install-banner {
         transform: translateY(0) !important;

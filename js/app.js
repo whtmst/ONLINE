@@ -1,7 +1,12 @@
-// URL ВЕБ-ПРИЛОЖЕНИЯ
+// TODO: Добавить кэширование ответов API
+// INFO: Эта функция временная, будет удалена в v2.0
+// WARN: Не использовать в продакшене, есть проблемы с памятью
+// ERROR: Известная проблема с IE11
+
+// INFO: URL ВЕБ-ПРИЛОЖЕНИЯ
 const API_URL = "https://script.google.com/macros/s/AKfycbwR8kXMqCgK4u8ViZUVjWSYMWYFgh6tDPfil2cEH8H-_-qdt0QTnOVmLIN_8Hu6PqA0/exec";
 
-// --- ЛОГИКА АВТОРИЗАЦИИ ---
+// INFO: --- ЛОГИКА АВТОРИЗАЦИИ ---
 const SESSION_KEY = 'guild_crafter_session';
 const SESSION_DURATION = 30 * 60 * 1000; // 30 минут
 
@@ -52,7 +57,8 @@ const isEditMode = !!(urlUser && urlToken);
 const currentUser = urlUser;
 const currentToken = urlToken;
 
-document.addEventListener('DOMContentLoaded', () => {  // <-- начало DOMContentLoaded
+// INFO: --- НАЧАЛО DOMContentLoaded ---
+document.addEventListener('DOMContentLoaded', () => {
 
   setupAuthUI();
   loadData();
@@ -90,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {  // <-- начало DOMCo
     });
   }
 
-  // Модальное окно (список крафтеров)
+  // INFO: --- МОДАЛЬНОЕ ОКНО (СПИСОК КРАФТЕРОВ) ---
   const craftersModal = document.getElementById('craftersModal');
   const loginModal = document.getElementById('loginModal');
   // Используем querySelectorAll, так как у нас теперь несколько крестиков
@@ -112,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {  // <-- начало DOMCo
     }
   };
 
-  // --- PWA Логика установки ---
+  // INFO: --- PWA ЛОГИКА УСТАНОВКИ ---
   let deferredPrompt;
   const installBtn = document.getElementById('installAppBtn');
   // Добавляем переменную для управления таймером скрытия
@@ -170,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {  // <-- начало DOMCo
     }
   });
 
-  // --- Логика рандомного цвета для футера
+  // Логика рандомного цвета для футера
   const footerLink = document.querySelector('.footer a');
 
   if (footerLink) {
@@ -184,7 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {  // <-- начало DOMCo
       footerLink.style.color = newColor;
     });
   }
-}); // <-- конец DOMContentLoaded
+
+});
+// INFO: --- КОНЕЦ DOMContentLoaded ---
 
 function setupAuthUI() {
   const loginLink = document.getElementById('loginLink');
@@ -280,7 +288,7 @@ async function loadData() {
     globalData.headers = data[0];
     globalData.rows = data.slice(1);
 
-    // --- Обработка числовых заголовков и учет новой колонки URL ---
+    // Обработка числовых заголовков и учет новой колонки URL
     globalData.userColumns = [];
     globalData.headers.forEach((colName, index) => {
       // Приводим к строке, чтобы избежать ошибки .trim() на числах
@@ -296,7 +304,6 @@ async function loadData() {
         });
       }
     });
-    // ---------------------------------------------------
 
     populateProfessionFilter();
     updateProfessionFilterStyle();
@@ -373,7 +380,7 @@ function renderTable() {
     // Фильтрация
     if (filterProf !== 'All' && profession !== filterProf) return;
 
-    // --- Скрытие категорий при поиске ---
+    // Скрытие категорий при поиске
     if (filterText) {
       // Если есть поиск, и это категория - пропускаем
       if (isCategory) return;
@@ -381,7 +388,6 @@ function renderTable() {
       // Если есть поиск, но рецепт не найден - пропускаем
       if (!recipeName.toLowerCase().includes(filterText)) return;
     }
-    // ----------------------------------------------------
 
     const tr = document.createElement('tr');
 
@@ -553,7 +559,7 @@ function openCraftersModal(btn) {
   modal.style.display = "block";
 }
 
-// --- Вспомогательная функция для генерации светлого цвета ---
+// Вспомогательная функция для генерации светлого цвета
 
 /**
  * Преобразует HSL (Hue, Saturation, Lightness) в HEX-цвет.
