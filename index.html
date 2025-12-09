@@ -89,11 +89,11 @@
         <div class="modal-content" style="max-width: 350px;">
             <span class="close-modal" id="closeLoginModal">❌</span>
             <h2>Вход для крафтера</h2>
-            <div class="login-form">
-                <input type="text" id="loginUser" placeholder="Ваш логин (user)">
-                <input type="password" id="loginToken" placeholder="Ваш токен (token)">
+            <form class="login-form" onsubmit="return false;">
+                <input type="text" id="loginUser" placeholder="Ваш логин (user)" autocomplete="username">
+                <input type="password" id="loginToken" placeholder="Ваш токен (token)" autocomplete="current-password">
                 <button class="login-btn" id="performLogin">Войти</button>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -112,7 +112,7 @@
             }
     </script>
     <button id="installAppBtn" class="btn">
-        📲 Установить приложение ONLINE
+        📲 Установить как приложение
     </button>
 </body>
 </html>

@@ -52,7 +52,7 @@ const isEditMode = !!(urlUser && urlToken);
 const currentUser = urlUser;
 const currentToken = urlToken;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {  // <-- начало DOMContentLoaded
 
   setupAuthUI();
   loadData();
@@ -179,6 +179,10 @@ function setupAuthUI() {
   const loginModal = document.getElementById('loginModal');
   const performLoginBtn = document.getElementById('performLogin');
 
+  // Получаем поля ввода для авторизации (используются ниже)
+  const loginUser = document.getElementById('loginUser');
+  const loginToken = document.getElementById('loginToken');
+
   // Если есть активная сессия (sessionUser)
   if (sessionUser) {
     loginLink.textContent = sessionUser + ' (Вы)';
@@ -214,11 +218,28 @@ function setupAuthUI() {
     };
   }
 
+  // Обработка входа через клавишу ENTER
+  const handleEnterKey = (event) => {
+    // Проверяем, была ли нажата клавиша Enter
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      // Имитируем нажатие на кнопку "Войти"
+      performLoginBtn.click();
+    }
+  };
+
+  if (loginUser) {
+    loginUser.addEventListener('keypress', handleEnterKey);
+  }
+  if (loginToken) {
+    loginToken.addEventListener('keypress', handleEnterKey);
+  }
+
   // Обработка входа через кнопку
-  if (performLoginBtn) {
+  if (performLoginBtn && loginUser && loginToken) {
     performLoginBtn.onclick = () => {
-      const user = document.getElementById('loginUser').value.trim();
-      const token = document.getElementById('loginToken').value.trim();
+      const user = loginUser.value.trim();
+      const token = loginToken.value.trim();
 
       if (user && token) {
         saveSession(user, token);

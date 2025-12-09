@@ -67,7 +67,6 @@ textarea {
 .cover-area {
     height: 150px;
     background: url('https://raw.githubusercontent.com/whtmst/T-Guides/refs/heads/main/MISCELLANEOUS/img/T-Guides.png') center center / cover no-repeat;
-    border-radius: 0 0 8px 8px;
     display: flex;
     align-items: flex-end;
     position: relative;
@@ -695,41 +694,60 @@ input[type="password"]:focus {
 }
 
 /* =========================================
-   PWA INSTALL BUTTON STYLES
+   PWA INSTALL BANNER STYLES (Dynamic & Smooth)
    ========================================= */
 #installAppBtn {
-    /* Добавляем базовые стили для мобильных устройств */
-    position: fixed;
-    /* Прибиваем к экрану */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    /* Поверх всего */
-    padding: 15px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    /* Анимация: Кнопка скрыта за пределами экрана */
+    margin: 0;
+    /* Начальное состояние: скрыто и прозрачно */
     transform: translateY(-100%);
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease;
     opacity: 0;
-    /* Стиль .btn уже задает фон, текст и т.д. */
+    /* Плавность: используем разные кривые для появления и исчезновения */
+    /* wills-change говорит браузеру использовать видеокарту для 60 FPS */
+    will-change: transform, opacity;
+    padding: 5px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-radius: 0;
+    display: none;
+    /* Отдельный внешний вид для кнопки */
+    font-family: var(--font-primary);
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    background: var(--success-color);
+    color: var(--text-color);
+    border: 0px solid var(--text-color);
 }
 
-/* Стилизация для показа (будет добавлена JS) */
-.show-install-banner {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-/* ❌ СКРЫВАЕМ КНОПКУ НА ПК (ЭКРАНЫ ШИРЕ 1024px) */
-@media (min-width: 1025px) {
+@media (max-width: 1024px) {
     #installAppBtn {
-        /* Принудительно скрываем на больших экранах */
-        display: none !important;
+        display: block;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        /* Кнопка уезжает медленнее (0.8s) и плавно */
+        transition:
+            transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.6s ease-in,
+            box-shadow 0.8s ease;
+    }
+    
+    /* Класс появления с эффектом отскока (Bounce) */
+    #installAppBtn.show-install-banner {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+
+        /* Эффект отскока при появлении (0.9s для мягкости) */
+        transition:
+            transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+            opacity 0.4s ease-out;
     }
 }
 
-/* Стили для МОБИЛЬНЫХ устройств (меньше 1025px) */
-@media (max-width: 1024px) {
-    /* Если кнопка не найдена в .main-wrapper, можно убедиться, что она всегда поверх */
+@media (min-width: 1025px) {
+    #installAppBtn {
+        display: none !important;
+    }
 }
