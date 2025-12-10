@@ -72,7 +72,7 @@
 
             <div class="nav-links" id="navLinks">
                 <a href="index.html">Главная</a>
-                <a href="recipes.html">База рецептов</a>
+                <a href="#">База рецептов</a>
                 <a href="https://github.com/whtmst/T-Guides" target="_blank" rel="noopener noreferrer">T-Guides</a>
             </div>
 
@@ -137,6 +137,65 @@
         </div>
     </div>
 
+    <!-- Модальное окно набора -->
+    <div id="recruitmentModal" class="modal">
+            <div class="modal-content" style="max-width: 650px;">
+                <span class="close-modal" id="closeRecruitmentModal">❌</span>
+                <h2>Гильдия <span class="accent-text">ONLINE</span></h2>
+
+                <div class="recruitment-info">
+                    <p>Гильдия ONLINE ведет <strong>активный набор</strong> в рейдовые статики и просто активных игроков для совместного освоения контента и фарма.</p>
+
+                    <div class="info-section">
+                        <h3><span class="btn-emoji">⚔️</span> Кого мы ищем в статик</h3>
+                        <ul class="class-list">
+                            <li>Присты</li>
+                            <li>Маги</li>
+                            <li>Чернокнижники</li>
+                            <li>Друиды -> Совы</li>
+                            <li>Шаманы</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section">
+                        <h3><span class="btn-emoji">🗓️</span> Наши рейдовые часы (РТ)</h3>
+                        <ul class="schedule-list">
+                            <li>Будние дни: 19:00 МСК</li>
+                            <li>Выходные (Суббота): 16:00 МСК</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section">
+                        <h3><span class="btn-emoji">🚀</span> Наш текущий прогресс</h3>
+                        <ul class="progress-list">
+                            <li><a href="https://github.com/whtmst/T-Guides/blob/main/RAIDS/MoltenCore.md" target="_blank" rel="noopener noreferrer">Molten Core: 12/12</a></li>
+                            <li><a href="https://github.com/whtmst/T-Guides/blob/main/RAIDS/Onyxia.md" target="_blank" rel="noopener noreferrer">Onyxia's Lair: 1/1</a></li>
+                            <li><a href="https://github.com/whtmst/T-Guides/blob/main/RAIDS/LowerKarazhanHalls.md" target="_blank" rel="noopener noreferrer">Lower Karazhan Halls: 6/6</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section">
+                        <h3><span class="btn-emoji">✅</span> Наши требования</h3>
+                        <ul class="requirements-list">
+                            <li>Минимальный уровень персонажа: 25+</li>
+                            <li>Активность, желание рейдить и развиваться.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section">
+                        <h3><span class="btn-emoji">🔗</span> Присоединяйся к нам!</h3>
+                        <p>Весь контент гильдии (сборы, анонсы, правила, <a href="https://github.com/whtmst/T-Guides" target="_blank" rel="noopener noreferrer">гайды</a>, чаты) доступен в нашем Discord-сервере.</p>
+                        <a href="https://discord.gg/6jHMsP5ZvM" target="_blank" rel="noopener noreferrer" class="btn discord-btn">
+                            Присоединиться к Discord
+                        </a>
+                        <p class="contact-info">
+                            Также можете писать в игре: ГМ <strong>Venomspite</strong> (Harrybeast), <strong>Titanbeard</strong>, <strong>Misha</strong>, <strong>Drovawowa</strong>, <strong>Minosher</strong>, <strong>Freezz</strong>, <strong>Shedar</strong> (Keiraportman)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <script src="js/app.js"></script>
     <script>
             if ('serviceWorker' in navigator) {
@@ -151,6 +210,10 @@
                 });
             }
     </script>
+    <div id="recruitmentBanner" class="recruitment-banner">
+            <span class="banner-icon">📢</span>
+            <span>У НАС ОТКРЫТ НАБОР</span>
+    </div>
     <button id="installAppBtn" class="btn">
         📲 Установить как приложение
     </button>

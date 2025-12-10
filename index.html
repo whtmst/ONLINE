@@ -71,7 +71,7 @@
             </button>
 
             <div class="nav-links" id="navLinks">
-                <a href="index.html">Главная</a>
+                <a href="#">Главная</a>
                 <a href="recipes.html">База рецептов</a>
                 <a href="https://github.com/whtmst/T-Guides" target="_blank" rel="noopener noreferrer">T-Guides</a>
             </div>
@@ -88,8 +88,11 @@
                 <a href="recipes.html" class="btn">Открыть страницу - База рецептов</a>
                 <a href="#" id="openRecruitmentLink" class="btn">НАБОР В ГИЛЬДИЮ</a>
                 <p>Здесь вы можете найти крафтеров и доступные у них рецепты. Нажмите на кнопку ниже, чтобы открыть страницу с рецептами.</p>
-                <!-- <a href="#"><img src="https://i.ibb.co/xtbnq8yg/Screenshot-2025-09-27-211409.png" alt="GUILD ONLINE - MOLTEN CORE - TITANBEARD & MISHA RAID"></a> -->
-                <p>Здесь вы можете найти крафтеров и доступные у них рецепты. Нажмите на кнопку ниже, чтобы открыть страницу с рецептами.</p>
+                <div class="hero-visual">
+                    <div id="ragnarosImage" class="clickable-image" data-modal-image="https://i.ibb.co/xtbnq8yg/Screenshot-2025-09-27-211409.png">
+                        <img src="https://i.ibb.co/xtbnq8yg/Screenshot-2025-09-27-211409.png" alt="Убийство Рагнароса гильдией ONLINE">
+                        <div class="overlay"></div> </div>
+                </div>
             </div>
         </div>
         <div class="footer">
@@ -113,6 +116,14 @@
                 <input type="password" id="loginToken" placeholder="Ваш токен (token)" autocomplete="current-password">
                 <button class="login-btn" id="performLogin">Войти</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно скриншота -->
+    <div id="imageModal" class="modal modal-fullscreen">
+        <div class="modal-content-image">
+            <span class="close-modal" id="closeImageModal">❌</span>
+            <img id="fullImage" src="" alt="Полный скриншот рейда">
         </div>
     </div>
 
@@ -189,6 +200,10 @@
                 });
             }
     </script>
+    <div id="recruitmentBanner" class="recruitment-banner">
+            <span class="banner-icon">📢</span>
+            <span>У НАС ОТКРЫТ НАБОР</span>
+    </div>
     <button id="installAppBtn" class="btn">
         📲 Установить как приложение
     </button>

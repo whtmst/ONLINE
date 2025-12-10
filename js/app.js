@@ -95,6 +95,41 @@ document.addEventListener('DOMContentLoaded', () => {
       searchInput.focus(); // Для удобства можно вернуть фокус
     });
   }
+  
+  // INFO: --- ЛОГИКА IMAGE MODAL (Скриншот) ---
+  
+  const imageModal = document.getElementById('imageModal');
+  const closeImageModal = document.getElementById('closeImageModal');
+  const fullImage = document.getElementById('fullImage');
+  const ragnarosImageContainer = document.getElementById('ragnarosImage');
+  
+  if (ragnarosImageContainer) {
+      ragnarosImageContainer.addEventListener('click', function() {
+          // Берем URL изображения из data-атрибута
+          const imageUrl = this.getAttribute('data-modal-image');
+          
+          // Устанавливаем URL в полноразмерную модалку
+          fullImage.src = imageUrl;
+          
+          // Открываем модалку
+          imageModal.style.display = 'block';
+      });
+  }
+  
+  if (closeImageModal) {
+      closeImageModal.addEventListener('click', function() {
+          imageModal.style.display = 'none';
+      });
+  }
+  
+  // Закрытие модалки при клике вне картинки
+  if (imageModal) {
+      window.addEventListener('click', function(event) {
+          if (event.target === imageModal) {
+              imageModal.style.display = 'none';
+          }
+      });
+  }
 
   // INFO: --- МОДАЛЬНОЕ ОКНО (СПИСОК КРАФТЕРОВ) ---
   const craftersModal = document.getElementById('craftersModal');
@@ -117,31 +152,56 @@ document.addEventListener('DOMContentLoaded', () => {
       loginModal.style.display = "none";
     }
   };
-  
+
   // INFO: --- ЛОГИКА МОДАЛЬНОГО ОКНА НАБОРА В ГИЛЬДИЮ ---
-    const recruitmentModal = document.getElementById('recruitmentModal');
-    const openRecruitmentLink = document.getElementById('openRecruitmentLink'); // ID новой кнопки
-    const closeRecruitmentModal = document.getElementById('closeRecruitmentModal');
-  
-    if (recruitmentModal && openRecruitmentLink && closeRecruitmentModal) {
-      // Открытие модального окна
-      openRecruitmentLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        recruitmentModal.style.display = "block";
-      });
-  
-      // Закрытие по крестику
-      closeRecruitmentModal.addEventListener('click', () => {
+  const recruitmentModal = document.getElementById('recruitmentModal');
+  const openRecruitmentLink = document.getElementById('openRecruitmentLink');
+  const closeRecruitmentModal = document.getElementById('closeRecruitmentModal');
+
+  if (recruitmentModal && openRecruitmentLink && closeRecruitmentModal) {
+    // Открытие модального окна
+    openRecruitmentLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      recruitmentModal.style.display = "block";
+    });
+
+    // Закрытие по крестику
+    closeRecruitmentModal.addEventListener('click', () => {
+      recruitmentModal.style.display = "none";
+    });
+
+    // Закрытие по клику вне модального окна
+    window.addEventListener('click', (e) => {
+      if (e.target === recruitmentModal) {
         recruitmentModal.style.display = "none";
-      });
-  
-      // Закрытие по клику вне модального окна
-      window.addEventListener('click', (e) => {
-        if (e.target === recruitmentModal) {
-          recruitmentModal.style.display = "none";
-        }
-      });
-    }
+      }
+    });
+  }
+
+  // INFO: --- БАННЕР "НАБОР В ГИЛЬДИЮ" (Справа внизу) ---
+  const recruitmentBanner = document.getElementById('recruitmentBanner');
+
+  // Проверяем, есть ли баннер и модалка на странице
+  if (recruitmentBanner && recruitmentModal) {
+
+    // 1. Показываем баннер через 2 секунды после загрузки сайта
+    setTimeout(() => {
+      recruitmentBanner.classList.add('show');
+    }, 2000);
+
+    // 2. Скрываем баннер автоматически через 10 секунд (2 сек задержка + 8 сек показ)
+    setTimeout(() => {
+      recruitmentBanner.classList.remove('show');
+    }, 10000);
+
+    // 3. Обработка клика
+    recruitmentBanner.addEventListener('click', () => {
+      // Скрываем баннер
+      recruitmentBanner.classList.remove('show');
+      // Открываем модальное окно (recruitmentModal уже объявлен выше в твоем коде)
+      recruitmentModal.style.display = "block";
+    });
+  }
 
   // INFO: --- PWA ЛОГИКА УСТАНОВКИ ---
   let deferredPrompt;
@@ -217,36 +277,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // INFO: --- МОБИЛЬНОЕ МЕНЮ (БУРГЕР) ---
-    const burgerBtn = document.getElementById('burgerBtn');
-    const navLinks = document.getElementById('navLinks');
-    const navElement = document.querySelector('nav'); // <--- Находим сам навбар
-  
-    if (burgerBtn && navLinks && navElement) {
-      burgerBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
-        burgerBtn.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        navElement.classList.toggle('menu-open'); // <--- Переключаем класс на nav
+  const burgerBtn = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  const navElement = document.querySelector('nav'); // <--- Находим сам навбар
+
+  if (burgerBtn && navLinks && navElement) {
+    burgerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      burgerBtn.classList.toggle('active');
+      navLinks.classList.toggle('active');
+      navElement.classList.toggle('menu-open'); // <--- Переключаем класс на nav
+    });
+
+    // Закрытие меню при клике вне его области
+    document.addEventListener('click', (e) => {
+      if (navLinks.classList.contains('active') && !navLinks.contains(e.target)) {
+        burgerBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+        navElement.classList.remove('menu-open'); // <--- Убираем класс с nav
+      }
+    });
+
+    // Закрытие меню при клике на ссылку
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        burgerBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+        navElement.classList.remove('menu-open'); // <--- Убираем класс с nav
       });
-  
-      // Закрытие меню при клике вне его области
-      document.addEventListener('click', (e) => {
-        if (navLinks.classList.contains('active') && !navLinks.contains(e.target)) {
-          burgerBtn.classList.remove('active');
-          navLinks.classList.remove('active');
-          navElement.classList.remove('menu-open'); // <--- Убираем класс с nav
-        }
-      });
-  
-      // Закрытие меню при клике на ссылку
-      navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          burgerBtn.classList.remove('active');
-          navLinks.classList.remove('active');
-          navElement.classList.remove('menu-open'); // <--- Убираем класс с nav
-        });
-      });
-    }
+    });
+  }
 
 });
 // INFO: --- КОНЕЦ DOMContentLoaded ---
