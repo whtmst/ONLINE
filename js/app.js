@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     openRecruitmentLink.addEventListener('click', (e) => {
       e.preventDefault();
       recruitmentModal.style.display = "block";
-      
+
     });
 
     // Закрытие по крестику
@@ -415,22 +415,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Устанавливает viewport, который разрешает масштабирование (для модального окна).
 function enableZoom() {
-    const metaTag = document.getElementById('viewport-meta');
-    if (metaTag) {
-        // Разрешаем масштабирование и не ограничиваем максимальный масштаб
-        metaTag.setAttribute('content', 'width=device-width, initial-scale=1.0');
-        console.log('Zoom ENABLED');
-    }
+  const metaTag = document.getElementById('viewport-meta');
+  if (metaTag) {
+    // Разрешаем масштабирование и не ограничиваем максимальный масштаб
+    metaTag.setAttribute('content', 'width=device-width, initial-scale=1.0');
+    console.log('Zoom ENABLED');
+  }
 }
 
 // Устанавливает viewport, который запрещает масштабирование (стандартное состояние).
 function disableZoom() {
-    const metaTag = document.getElementById('viewport-meta');
-    if (metaTag) {
-        // Запрещаем масштабирование и ограничиваем максимальный масштаб 1.0
-        metaTag.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-        console.log('Zoom DISABLED');
-    }
+  const metaTag = document.getElementById('viewport-meta');
+  if (metaTag) {
+    // Запрещаем масштабирование и ограничиваем максимальный масштаб 1.0
+    metaTag.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+    console.log('Zoom DISABLED');
+  }
 }
 
 // Функция авторизации
