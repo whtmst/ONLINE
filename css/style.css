@@ -212,9 +212,12 @@ h1 {
 
 .hero-actions {
     display: flex;
-    justify-content: center; /* Центрируем кнопки внутри контейнера */
-    gap: 20px; /* Добавляем отступ между кнопками */
-    margin-top: 20px; /* Отступ сверху от заголовка/текста */
+    justify-content: center;
+    /* Центрируем кнопки внутри контейнера */
+    gap: 20px;
+    /* Добавляем отступ между кнопками */
+    margin-top: 20px;
+    /* Отступ сверху от заголовка/текста */
 }
 
 .btn {
@@ -238,10 +241,11 @@ h1 {
 
 @media (max-width: 600px) {
     .hero-actions {
-        flex-direction: column; /* Кнопки друг под другом на очень маленьких экранах */
+        flex-direction: column;
+        /* Кнопки друг под другом на очень маленьких экранах */
         gap: 10px;
     }
-    
+
     /* Дополнительно, чтобы кнопка занимала всю доступную ширину */
     .hero-actions .btn {
         width: 100%;
@@ -746,15 +750,34 @@ input[type="password"]:focus {
 
 /* Стили для полноэкранной картинки */
 .modal-fullscreen {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+}
+
+#imageModal.modal-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#imageModal.modal-fullscreen.is-open {
+    visibility: visible;
+    opacity: 1;
 }
 
 .modal-content-image {
     width: 90%;
     max-width: 1400px;
-    margin: 5% auto;
     background: transparent;
     border: 1px solid var(--accent-color);
     border-radius: 8px;
@@ -773,7 +796,7 @@ input[type="password"]:focus {
 }
 
 .modal-content-image .close-modal {
-    position: absolute; 
+    position: absolute;
     top: 10px;
     right: 10px;
     font-family: var(--font-emoji);
@@ -791,6 +814,80 @@ input[type="password"]:focus {
     text-decoration: none;
     cursor: pointer;
     opacity: 1;
+}
+
+/* INFO: = HERO GALLERY STYLES ==================== */
+
+.gallery-container {
+    position: relative;
+    /* Контейнер для абсолютного позиционирования стрелок */
+    display: inline-block;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 650px;
+}
+
+/* Переопределяем margin для hero-visual, чтобы отступы были у контейнера галереи */
+.hero-visual {
+    margin: 40px auto;
+    /* Центрирование */
+    text-align: center;
+}
+
+.arrow {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 65px;
+    height: 100%;
+    background-color: var(--bg-main);
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    font-size: 48px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 5;
+    /* Над картинкой, но под оверлеем при наведении */
+    opacity: 0.25;
+    transition: opacity 0.2s;
+    user-select: none;
+}
+
+.left-arrow {
+    left: 0;
+}
+
+.right-arrow {
+    right: 0;
+}
+
+.arrow:hover {
+    opacity: 0.65;
+}
+
+@media (min-width: 1025px) {
+    .gallery-container .arrow {
+        opacity: 0;
+    }
+
+    .gallery-container:hover .arrow {
+        opacity: 0.65;
+    }
+}
+
+/* ==================== АНИМАЦИЯ ПЛАВНОЙ СМЕНЫ ИЗОБРАЖЕНИЯ ==================== */
+
+/* heroImage должен иметь transition: opacity уже в .clickable-image img */
+
+.fade-out {
+    /* Непрозрачность на время, пока загружается новое изображение */
+    opacity: 0.15 !important;
+    /* Добавляем !important на случай, если есть inline стили,
+       которые могут перекрыть transition */
 }
 
 /* INFO: = RECRUITMENT MODAL STYLES ==================== */

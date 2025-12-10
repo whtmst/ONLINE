@@ -95,40 +95,138 @@ document.addEventListener('DOMContentLoaded', () => {
       searchInput.focus(); // Для удобства можно вернуть фокус
     });
   }
-  
-  // INFO: --- ЛОГИКА IMAGE MODAL (Скриншот) ---
-  
+
+  // INFO: --- ЛОГИКА IMAGE GALLERY & IMAGE MODAL (Скриншот) ---
+
+  // Получение элементов галереи
+  const galleryContainer = document.getElementById('galleryContainer');
+  const heroImage = document.getElementById('heroImage');
+  const prevImageBtn = document.getElementById('prevImage');
+  const nextImageBtn = document.getElementById('nextImage');
+  const ragnarosImageContainer = document.getElementById('ragnarosImage'); // Клик по картинке
+
+  // Получение данных о картинках
+  let images = [];
+  let currentIndex = 0;
+  const PRELOAD_COUNT = 3; // Количество картинок для предзагрузки в каждую сторону
+
+  if (galleryContainer) {
+    try {
+      images = JSON.parse(galleryContainer.getAttribute('data-images'));
+      currentIndex = parseInt(galleryContainer.getAttribute('data-modal-image-index')) || 0;
+    } catch (e) {
+      console.error("Ошибка парсинга списка изображений:", e);
+    }
+
+    // Начальная предзагрузка
+    preloadImages();
+  }
+
+  // Функция для агрессивной предварительной загрузки соседних изображений (в обе стороны). Загрузка происходит в фоновом режиме, используя браузерный кэш.
+  function preloadImages() {
+    if (images.length <= 1) return;
+
+    for (let i = 1; i <= PRELOAD_COUNT; i++) {
+      // Загрузка вперед
+      const nextIndex = (currentIndex + i) % images.length;
+      const nextImg = new Image();
+      nextImg.src = images[nextIndex];
+
+      // Загрузка назад
+      const prevIndex = (currentIndex - i + images.length) % images.length;
+      const prevImg = new Image();
+      prevImg.src = images[prevIndex];
+    }
+  }
+
+  // Функция для обновления картинки с ожиданием загрузки (для устранения задержки)
+  function updateImage(index) {
+    if (images.length === 0) return;
+
+    // Циклическое листание
+    let newIndex = index;
+    if (newIndex >= images.length) {
+      newIndex = 0;
+    } else if (newIndex < 0) {
+      newIndex = images.length - 1;
+    }
+
+    const newSrc = images[newIndex];
+
+    // 1. Создаем временный объект Image для проверки загрузки
+    const tempImg = new Image();
+
+    // 2. Снимаем класс fade-in и добавляем fade-out, чтобы запустить затухание
+    heroImage.classList.remove('fade-in');
+    heroImage.classList.add('fade-out');
+    // Затухание происходит мгновенно благодаря transition в CSS, но смена src еще не произошла.
+
+    // Задержка на время, пока длится CSS-переход (0.3s)
+    setTimeout(() => {
+      tempImg.onload = () => {
+        // 4. Как только изображение загружено/декодировано, меняем src основного элемента
+        heroImage.src = newSrc;
+
+        // 5. Убираем fade-out и добавляем fade-in, чтобы запустить плавное появление
+        heroImage.classList.remove('fade-out');
+        heroImage.classList.add('fade-in');
+
+        // 6. Обновляем текущий индекс и атрибуты
+        currentIndex = newIndex;
+        galleryContainer.setAttribute('data-modal-image-index', currentIndex);
+
+        // 7. Вызываем предзагрузку, чтобы загрузить НОВЫХ соседей
+        preloadImages();
+      };
+
+      // 3. Запускаем загрузку
+      tempImg.src = newSrc;
+    }, 300); // 300ms соответствует 0.3s transition в CSS
+  }
+
+  // ЛОГИКА СТРЕЛОК
+  if (prevImageBtn) {
+    prevImageBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Предотвращаем срабатывание клика по самой картинке
+      updateImage(currentIndex - 1);
+    });
+  }
+
+  if (nextImageBtn) {
+    nextImageBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Предотвращаем срабатывание клика по самой картинке
+      updateImage(currentIndex + 1);
+    });
+  }
+
+  // ЛОГИКА ОТКРЫТИЯ МОДАЛКИ (Открывает текущую картинку)
   const imageModal = document.getElementById('imageModal');
   const closeImageModal = document.getElementById('closeImageModal');
   const fullImage = document.getElementById('fullImage');
-  const ragnarosImageContainer = document.getElementById('ragnarosImage');
-  
+
   if (ragnarosImageContainer) {
-      ragnarosImageContainer.addEventListener('click', function() {
-          // Берем URL изображения из data-атрибута
-          const imageUrl = this.getAttribute('data-modal-image');
-          
-          // Устанавливаем URL в полноразмерную модалку
-          fullImage.src = imageUrl;
-          
-          // Открываем модалку
-          imageModal.style.display = 'block';
-      });
+    ragnarosImageContainer.addEventListener('click', function () {
+      if (images.length > 0) {
+        // Устанавливаем текущий URL в полноразмерную модалку
+        fullImage.src = images[currentIndex];
+        imageModal.classList.add('is-open');
+      }
+    });
   }
-  
+
+  // ЛОГИКА ЗАКРЫТИЯ МОДАЛКИ
   if (closeImageModal) {
-      closeImageModal.addEventListener('click', function() {
-          imageModal.style.display = 'none';
-      });
+    closeImageModal.addEventListener('click', function () {
+      imageModal.classList.remove('is-open');
+    });
   }
-  
-  // Закрытие модалки при клике вне картинки
+
   if (imageModal) {
-      window.addEventListener('click', function(event) {
-          if (event.target === imageModal) {
-              imageModal.style.display = 'none';
-          }
-      });
+    window.addEventListener('click', function (event) {
+      if (event.target === imageModal) {
+        imageModal.classList.remove('is-open');
+      }
+    });
   }
 
   // INFO: --- МОДАЛЬНОЕ ОКНО (СПИСОК КРАФТЕРОВ) ---
