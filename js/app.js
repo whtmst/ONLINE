@@ -210,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Устанавливаем текущий URL в полноразмерную модалку
         fullImage.src = images[currentIndex];
         imageModal.classList.add('is-open');
+        enableZoom();
       }
     });
   }
@@ -218,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (closeImageModal) {
     closeImageModal.addEventListener('click', function () {
       imageModal.classList.remove('is-open');
+      disableZoom();
     });
   }
 
@@ -225,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', function (event) {
       if (event.target === imageModal) {
         imageModal.classList.remove('is-open');
+        disableZoom();
       }
     });
   }
@@ -261,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     openRecruitmentLink.addEventListener('click', (e) => {
       e.preventDefault();
       recruitmentModal.style.display = "block";
+      
     });
 
     // Закрытие по крестику
@@ -409,6 +413,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // INFO: --- КОНЕЦ DOMContentLoaded ---
 
+// Устанавливает viewport, который разрешает масштабирование (для модального окна).
+function enableZoom() {
+    const metaTag = document.getElementById('viewport-meta');
+    if (metaTag) {
+        // Разрешаем масштабирование и не ограничиваем максимальный масштаб
+        metaTag.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        console.log('Zoom ENABLED');
+    }
+}
+
+// Устанавливает viewport, который запрещает масштабирование (стандартное состояние).
+function disableZoom() {
+    const metaTag = document.getElementById('viewport-meta');
+    if (metaTag) {
+        // Запрещаем масштабирование и ограничиваем максимальный масштаб 1.0
+        metaTag.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+        console.log('Zoom DISABLED');
+    }
+}
+
+// Функция авторизации
 function setupAuthUI() {
   const loginLink = document.getElementById('loginLink');
   if (!loginLink) return;
