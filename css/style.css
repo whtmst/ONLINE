@@ -191,7 +191,7 @@ h1 {
 /* INFO: = HERO SECTION & BUTTONS ==================== */
 .hero {
     text-align: center;
-    padding: 50px 0;
+    padding-top: 50px;
 }
 
 .hero p {
@@ -208,6 +208,13 @@ h1 {
 
 .hero p:last-of-type {
     margin-bottom: 10px;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center; /* Центрируем кнопки внутри контейнера */
+    gap: 20px; /* Добавляем отступ между кнопками */
+    margin-top: 20px; /* Отступ сверху от заголовка/текста */
 }
 
 .btn {
@@ -227,6 +234,19 @@ h1 {
     color: var(--accent-color);
     background: var(--accent-hover-color);
     opacity: 0.95;
+}
+
+@media (max-width: 600px) {
+    .hero-actions {
+        flex-direction: column; /* Кнопки друг под другом на очень маленьких экранах */
+        gap: 10px;
+    }
+    
+    /* Дополнительно, чтобы кнопка занимала всю доступную ширину */
+    .hero-actions .btn {
+        width: 100%;
+        margin: 0 auto;
+    }
 }
 
 /* INFO: = CONTROLS (FILTERS & SEARCH) ==================== */
