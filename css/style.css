@@ -4,12 +4,6 @@ html {
     height: 100%;
 }
 
-*,
-*:before,
-*:after {
-    box-sizing: inherit;
-}
-
 body {
     font-family: var(--font-primary);
     background-color: var(--bg-main);
@@ -21,12 +15,31 @@ body {
     flex-direction: column;
 }
 
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
 /* Наследование шрифта для элементов форм */
 button,
 input,
 select,
 textarea {
     font-family: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: var(--accent-color);
+    background: transparent;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+a:hover {
+    text-decoration: none;
+    color: var(--text-color);
+    background: var(--accent-color);
 }
 
 /* Изменение цвета выделения текста */
@@ -507,12 +520,12 @@ tr.category-row td {
 
 .modal-content {
     background-color: var(--bg-section);
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid var(--accent-color);
     border-radius: 8px;
     width: 90%;
-    max-width: 400px;
+    max-width: 350px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     position: relative;
     animation: fadeIn 0.3s;
@@ -537,7 +550,7 @@ tr.category-row td {
     opacity: 1;
 }
 
-/* Стили H2, применимые только к модалке крафтеров */
+/* Стили h2, применимые только к модалке крафтеров */
 #craftersModal h2 {
     text-align: center;
 }
@@ -595,7 +608,7 @@ tr.category-row td {
     margin-top: 20px;
 }
 
-/* Стили H2, применимые только к модалке входа */
+/* Стили h2, применимые только к модалке входа */
 #loginModal h2 {
     text-align: center;
     text-transform: uppercase;
@@ -657,6 +670,160 @@ input[type="password"]:focus {
 .login-btn:hover {
     background: var(--accent-hover-color);
     color: var(--accent-color);
+}
+
+/* INFO: = RECRUITMENT MODAL STYLES ==================== */
+
+.recruitment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Отступ между основными секциями */
+    margin-top: 10px;
+}
+
+.accent-text {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Стили h2, применимые только к модалке набора */
+#recruitmentModal h2 {
+    color: var(--text-color);
+    font-size: 2em;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.recruitment-info h3 {
+    color: var(--accent-color);
+    font-size: 1.2em;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.section-subtitle {
+    font-size: 0.9em;
+    opacity: 0.7;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.class-list,
+.schedule-list,
+.progress-list,
+.requirements-list {
+    list-style: none;
+    padding-left: 35px;
+    margin: 0;
+}
+
+.class-list li::before {
+    content: "🗡️";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.class-list li:nth-child(1)::before {
+    content: "🙏";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.class-list li:nth-child(2)::before {
+    content: "✨";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.class-list li:nth-child(3)::before {
+    content: "😈";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.class-list li:nth-child(4)::before {
+    content: "🌿";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.class-list li:nth-child(5)::before {
+    content: "⚡";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.schedule-list li::before {
+    content: "🕑";
+    /* Иконка для времени */
+    font-family: var(--font-emoji);
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.progress-list li::before {
+    content: "⭐";
+    /* Иконка для прогресса */
+    font-family: var(--font-emoji);
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.progress-list li:nth-child(1)::before {
+    content: "🔥";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.progress-list li:nth-child(2)::before {
+    content: "🐲";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.progress-list li:nth-child(3)::before {
+    content: "🕸️";
+    /* Иконка для классов */
+    font-family: var(--font-emoji);
+}
+
+.requirements-list li::before {
+    content: "➡️";
+    /* Иконка для требований */
+    font-family: var(--font-emoji);
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.discord-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background: var(--success-color);
+    color: var(--text-color);
+    border: none;
+    margin: 10px 0 15px 0;
+    transition: background 0.2s;
+}
+
+.discord-btn:hover {
+    background: var(--accent-hover-color);
+    color: var(--accent-color);
+    opacity: 1;
+}
+
+.contact-info {
+    font-size: 1em;
+    opacity: 0.75;
+    margin-top: 10px;
+    line-height: 1.4;
 }
 
 /* INFO: = FOOTER STYLES ==================== */

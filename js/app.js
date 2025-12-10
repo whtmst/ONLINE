@@ -117,6 +117,31 @@ document.addEventListener('DOMContentLoaded', () => {
       loginModal.style.display = "none";
     }
   };
+  
+  // INFO: --- ЛОГИКА МОДАЛЬНОГО ОКНА НАБОРА В ГИЛЬДИЮ ---
+    const recruitmentModal = document.getElementById('recruitmentModal');
+    const openRecruitmentLink = document.getElementById('openRecruitmentLink'); // ID новой кнопки
+    const closeRecruitmentModal = document.getElementById('closeRecruitmentModal');
+  
+    if (recruitmentModal && openRecruitmentLink && closeRecruitmentModal) {
+      // Открытие модального окна
+      openRecruitmentLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        recruitmentModal.style.display = "block";
+      });
+  
+      // Закрытие по крестику
+      closeRecruitmentModal.addEventListener('click', () => {
+        recruitmentModal.style.display = "none";
+      });
+  
+      // Закрытие по клику вне модального окна
+      window.addEventListener('click', (e) => {
+        if (e.target === recruitmentModal) {
+          recruitmentModal.style.display = "none";
+        }
+      });
+    }
 
   // INFO: --- PWA ЛОГИКА УСТАНОВКИ ---
   let deferredPrompt;
