@@ -443,6 +443,9 @@ tr.category-row td {
 
 .link-icon:hover {
     opacity: 1;
+    text-decoration: none;
+    color: var(--accent-color);
+    background: transparent;
 }
 
 /* INFO: = SLIDER TOGGLE (CUSTOM CHECKBOX) ==================== */
