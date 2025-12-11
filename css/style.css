@@ -412,33 +412,72 @@ tr.category-row td {
     text-transform: uppercase;
 }
 
+/* INFO: = TABLE TR HOVER EFFECT ==================== */
+
+/* 1. Плавный переход для фона и тени */
+table tr,
+table tr td:first-child {
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 2. Подсветка строки с использованием box-shadow для равномерности */
+#recipeTable tbody tr:not(.category-row):hover {
+    /* Меняем background-color на едва заметный box-shadow */
+    /* Тонкий, белый внутренний (inset) box-shadow */
+    box-shadow: inset 0 0 0 1000px rgba(var(--bg-main-rgb), 0.5);
+}
+
+/* 3. Обязательное переопределение для липкой ячейки */
+#recipeTable tbody tr:not(.category-row):hover td:first-child {
+    /* Наследуем основной фон, чтобы убрать возможные артефакты */
+    /* Важно! Нельзя задать box-shadow для td:first-child,
+       потому что box-shadow обрезается по границе ячейки.
+       Мы просто гарантируем, что фон унаследован корректно. */
+    background-color: inherit;
+}
+
+/* 4. Исправление конфликта: border-bottom для липкой ячейки */
+/* В вашей текущей реализации border-bottom для td:first-child
+   накладывается на тень/фон tr:hover.
+   Сделаем его слегка прозрачным при наведении, чтобы смягчить эффект. */
+#recipeTable tbody tr:not(.category-row):hover td {
+    border-bottom-color: rgba(var(--accent-hover-color-rgb), 0.5);
+}
+
 /* INFO: = LINK ICON CUSTOM STYLES ==================== */
+/* 1. Левая ячейка (Рецепт) */
 .recipe-cell {
-    display: flex;
-    /* Делаем ячейку контейнером для выравнивания */
-    justify-content: space-between;
-    /* Распределяем содержимое по ширине */
-    align-items: center;
-    padding: 12px 15px !important;
-    /* Убедимся, что padding от th/td не ломается */
-}
-
-.action-cell {
-    padding: 5px 15px !important;
-    text-align: center;
+    display: table-cell;
     vertical-align: middle;
+    padding: 12px 15px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
+/* 2. Правая ячейка (Кнопка/Действие) */
+.action-cell {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 12px 15px;
+    height: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* 3. Иконка ссылки (Глобус) */
 .link-icon {
     font-family: var(--font-emoji);
-    /* Используем стандартный шрифт для эмодзи, чтобы значок был цветным */
     text-decoration: none;
     font-size: 1.1em;
     margin-left: 10px;
-    /* Отделяем иконку от текста рецепта если он слишком длинный */
     cursor: pointer;
     opacity: 0.5;
     transition: opacity 0.2s;
+    float: right;
+    /* Отправляем иконку в правый край ячейки */
+    position: relative;
+    top: 1px;
+    /* Небольшая коррекция, если иконка будет казаться выше текста */
 }
 
 .link-icon:hover {
