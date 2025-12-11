@@ -846,7 +846,7 @@ input[type="password"]:focus {
     background-color: var(--bg-main);
     color: var(--text-color);
     font-family: var(--font-emoji);
-    font-size: 48px;
+    font-size: 32px;
     line-height: 40px;
     text-align: center;
     cursor: pointer;
@@ -876,6 +876,16 @@ input[type="password"]:focus {
 
     .gallery-container:hover .arrow {
         opacity: 0.65;
+    }
+}
+
+@media (max-width: 600px) {
+    .arrow {
+        width: 35px;
+        height: 100%;
+        font-family: var(--font-emoji);
+        font-size: 18px;
+        line-height: 40px;
     }
 }
 
