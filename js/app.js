@@ -259,24 +259,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const openRecruitmentLink = document.getElementById('openRecruitmentLink');
   const closeRecruitmentModal = document.getElementById('closeRecruitmentModal');
 
-  if (recruitmentModal && openRecruitmentLink && closeRecruitmentModal) {
-    // Открытие модального окна
-    openRecruitmentLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      recruitmentModal.style.display = "block";
-
-    });
-
+  // 1. ЛОГИКА ЗАКРЫТИЯ
+  if (recruitmentModal && closeRecruitmentModal) {
     // Закрытие по крестику
     closeRecruitmentModal.addEventListener('click', () => {
       recruitmentModal.style.display = "none";
     });
 
     // Закрытие по клику вне модального окна
+    // Используем event.target, чтобы не конфликтовать с window.onclick для других модалок
     window.addEventListener('click', (e) => {
       if (e.target === recruitmentModal) {
         recruitmentModal.style.display = "none";
       }
+    });
+  }
+
+  // 2. ЛОГИКА ОТКРЫТИЯ ПО ССЫЛКЕ (РАБОТАЕТ ТОЛЬКО НА INDEX.HTML)
+  if (recruitmentModal && openRecruitmentLink) {
+    // Открытие модального окна
+    openRecruitmentLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      recruitmentModal.style.display = "block";
     });
   }
 
