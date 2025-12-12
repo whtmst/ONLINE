@@ -638,6 +638,9 @@ function renderTable() {
 
     const isCategory = recipeName && recipeName.startsWith('---') && recipeName.endsWith('---');
 
+    // Экранируем одинарные кавычки, чтобы Troll's не ломал JS
+    const escapedRecipeName = recipeName ? recipeName.replace(/'/g, "\\'") : "";
+
     // Фильтрация
     if (filterProf !== 'All' && profession !== filterProf) return;
 
@@ -696,17 +699,17 @@ function renderTable() {
         const uniqueId = `slider-${rowIndex}`;
 
         rowHtml += `
-                    <td class="action-cell">
-                        <div class="slider-container">
-                            <div class="slider">
-                                <input type="checkbox" id="${uniqueId}" class="slider-checkbox" ${checked}
-                                    onchange="updateRecipe('${profession}', '${recipeName}', this.checked)">
-                                <label class="slider-label" for="${uniqueId}">
-                                    <span class="slider-inner"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </td>`;
+            <td class="action-cell">
+                <div class="slider-container">
+                    <div class="slider">
+                        <input type="checkbox" id="${uniqueId}" class="slider-checkbox" ${checked}
+                            onchange="updateRecipe('${profession}', '${escapedRecipeName}', this.checked)">
+                        <label class="slider-label" for="${uniqueId}">
+                            <span class="slider-inner"></span>
+                        </label>
+                    </div>
+                </div>
+            </td>`;
       } else {
         rowHtml += `<td>Пользователь не найден</td>`;
       }
@@ -739,7 +742,7 @@ function renderTable() {
                     <button class="crafters-btn"
                         ${btnClass}
                         title="${btnTitle}"
-                        data-recipe="${recipeName.replace(/"/g, '&quot;')}"
+                        data-recipe="${recipeName.replace(/"/g, '&quot;').replace(/'/g, '&apos;')}"
                         data-crafters="${dataCrafters}"
                         ${onClick}>
                         ${btnText}
@@ -757,7 +760,7 @@ async function updateRecipe(profession, recipeName, isChecked) {
   if (!isEditMode) return;
 
   // Находим элементы управления
-  const checkbox = event.target; 
+  const checkbox = event.target;
   // Ищем ближайший контейнер, чтобы применить к нему стили мигания и смены текста
   const container = checkbox.closest('.slider-container');
 
