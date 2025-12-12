@@ -531,7 +531,7 @@ async function loadData() {
     const json = await response.json(); // Сначала получаем "сырой" JSON
 
     let data;
-    
+
     // Если пришел новый формат с алиасами (объект с полями tableData и userAliases)
     if (json.tableData) {
       data = json.tableData;            // Сама таблица рецептов
@@ -543,7 +543,7 @@ async function loadData() {
     }
 
     if (json.error) {
-       throw new Error(json.error);
+      throw new Error(json.error);
     }
 
     globalData.headers = data[0];
@@ -643,10 +643,10 @@ function renderTable() {
 
     // Скрытие категорий при поиске
     if (filterText) {
-		// Если есть поиск, и это категория - пропускаем
+      // Если есть поиск, и это категория - пропускаем
       if (isCategory) return;
 
-		// Если есть поиск, но рецепт не найден - пропускаем
+      // Если есть поиск, но рецепт не найден - пропускаем
       if (!recipeName.toLowerCase().includes(filterText)) return;
     }
 
@@ -715,12 +715,12 @@ function renderTable() {
       const crafters = [];
       globalData.userColumns.forEach(userCol => {
         if (row[userCol.index] === true) {
-          
+
           // --- ПОДСТАНОВКА АЛИАСА ---
           const loginLower = userCol.name.toLowerCase();
           // Если есть алиас в базе - берем его, если нет - берем логин из заголовка
           const displayName = globalAliases[loginLower] ? globalAliases[loginLower] : userCol.name;
-          
+
           crafters.push(displayName);
         }
       });
