@@ -752,15 +752,21 @@ function renderTable() {
   });
 }
 
-// Отправка данных на сервер с обработкой ошибок
+// Отправка данных на сервер с обработкой ошибок и индикацией сохранения
 async function updateRecipe(profession, recipeName, isChecked) {
   if (!isEditMode) return;
 
-  const checkbox = event.target; // Сохраняем ссылку на чекбокс
+  // Находим элементы управления
+  const checkbox = event.target; 
+  // Ищем ближайший контейнер, чтобы применить к нему стили мигания и смены текста
+  const container = checkbox.closest('.slider-container');
 
   try {
-    // Мы используем 'text/plain', чтобы избежать CORS Preflight (OPTIONS) запроса.
-    // Google Apps Script все равно прочитает тело как строку и распарсит JSON.
+    // 1. Включаем режим сохранения: кнопка мигает, текст меняется, клики блокируются
+    if (container) {
+      container.classList.add('is-saving');
+    }
+
     const response = await fetch(API_URL, {
       method: 'POST',
       redirect: "follow",
@@ -778,12 +784,8 @@ async function updateRecipe(profession, recipeName, isChecked) {
 
     const result = await response.json();
 
-    // Проверка ответа сервера
     if (result.status === 'error') {
-      // Если ошибка - откатываем галочку
       checkbox.checked = !isChecked;
-
-      // Показываем уведомление
       alert(`Не удалось сохранить: ${result.message}`);
       console.error('Server error:', result.message);
     } else {
@@ -791,10 +793,15 @@ async function updateRecipe(profession, recipeName, isChecked) {
     }
 
   } catch (err) {
-    // Если вообще не дошло до сервера - откатываем галочку
     checkbox.checked = !isChecked;
     alert('Ошибка соединения с сервером');
     console.error('Fetch error:', err);
+  } finally {
+    // 2. Выключаем режим сохранения в любом случае (успех или ошибка)
+    // Кнопка снова станет активной, текст вернется на КРАФЧУ/НЕ КРАФЧУ
+    if (container) {
+      container.classList.remove('is-saving');
+    }
   }
 }
 

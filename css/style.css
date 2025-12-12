@@ -570,6 +570,65 @@ table tr td:first-child {
     color: var(--accent-color);
 }
 
+/* = АНИМАЦИЯ: СОХРАНЯЮ... = */
+
+.slider-container.is-saving {
+    pointer-events: none;
+    cursor: not-allowed;
+    animation: pulse-blink 1.5s infinite ease-in-out;
+}
+
+/* 1. Делаем текст КРАФЧУ/НЕ КРАФЧУ прозрачным, но не удаляем (чтобы не ломать размеры) */
+.slider-container.is-saving .slider-inner::before,
+.slider-container.is-saving .slider-inner::after {
+    color: transparent !important;
+    text-shadow: none !important;
+}
+
+/* 2. Накладываем текст СОХРАНЯЮ поверх всей кнопки */
+.slider-container.is-saving .slider-label::before {
+    content: "СОХРАНЯЮ..." !important;
+    position: absolute !important;
+    z-index: 5;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-primary);
+    font-size: 16px !important;
+    font-weight: bold;
+    color: var(--text-color) !important;
+    pointer-events: none;
+    text-align: center;
+    transform: none !important;
+}
+
+/* 3. Приглушаем цвета ползунка и фона, чтобы текст лучше читался */
+.slider-container.is-saving .slider-label {
+    filter: grayscale(0.5);
+}
+
+.slider-container.is-saving .slider-label::after {
+    opacity: 0.7 !important;
+}
+
+@keyframes pulse-blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 /* INFO: = MODAL STYLES ==================== */
 .modal {
     display: none;
