@@ -520,6 +520,7 @@ function setupAuthUI() {
 }
 
 let globalData = { headers: [], rows: [], userColumns: [] }; // Обновляем структуру данных
+let globalAliases = {}; // <--- Хранилище для алиасов
 
 async function loadData() {
   const loader = document.getElementById('loader');
@@ -527,7 +528,23 @@ async function loadData() {
 
   try {
     const response = await fetch(API_URL);
-    const data = await response.json();
+    const json = await response.json(); // Сначала получаем "сырой" JSON
+
+    let data;
+    
+    // Если пришел новый формат с алиасами (объект с полями tableData и userAliases)
+    if (json.tableData) {
+      data = json.tableData;            // Сама таблица рецептов
+      globalAliases = json.userAliases || {}; // Сохраняем красивые имена
+    } else {
+      // Если пришел старый формат (просто массив, на всякий случай)
+      data = json;
+      globalAliases = {};
+    }
+
+    if (json.error) {
+       throw new Error(json.error);
+    }
 
     globalData.headers = data[0];
     globalData.rows = data.slice(1);
@@ -626,10 +643,10 @@ function renderTable() {
 
     // Скрытие категорий при поиске
     if (filterText) {
-      // Если есть поиск, и это категория - пропускаем
+		// Если есть поиск, и это категория - пропускаем
       if (isCategory) return;
 
-      // Если есть поиск, но рецепт не найден - пропускаем
+		// Если есть поиск, но рецепт не найден - пропускаем
       if (!recipeName.toLowerCase().includes(filterText)) return;
     }
 
@@ -668,11 +685,10 @@ function renderTable() {
       recipeCellHtml = `<td>${recipeName}</td>`;
     }
 
-    // Собираем строку
     let rowHtml = recipeCellHtml; // Первая ячейка
 
     if (isEditMode) {
-      // Режим редактирования: показываем чекбокс только для текущего пользователя
+      // Режим редактирования: показываем слайдер только для текущего пользователя
       const userCol = globalData.userColumns.find(col => col.name.toLowerCase() === currentUser.toLowerCase());
       if (userCol) {
         const hasRecipe = row[userCol.index] === true;
@@ -699,7 +715,13 @@ function renderTable() {
       const crafters = [];
       globalData.userColumns.forEach(userCol => {
         if (row[userCol.index] === true) {
-          crafters.push(userCol.name);
+          
+          // --- ПОДСТАНОВКА АЛИАСА ---
+          const loginLower = userCol.name.toLowerCase();
+          // Если есть алиас в базе - берем его, если нет - берем логин из заголовка
+          const displayName = globalAliases[loginLower] ? globalAliases[loginLower] : userCol.name;
+          
+          crafters.push(displayName);
         }
       });
 
